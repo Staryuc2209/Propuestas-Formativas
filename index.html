@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Propuestas Formativas Interactivas · Ernesto Javier Estrella Alcocer</title>
+<style>
+:root{
+  --g:#6B1C35;--gL:#F4E5E9;--gLL:#FBF3F5;
+  --d:#8B6914;--dL:#F7EFD7;
+  --v:#2D6A4F;--vL:#E8F5EE;
+  --gr:#1A1A1A;--gs:#555;--gs2:#888;
+  --warn:#B94A00;
+  --bg:#F6F3EE;--sf:#FFF;
+  --bd:#DDD8D0;
+  --r:10px;--rs:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--gr);min-height:100vh;font-size:20px;line-height:1.7}
+h4{font-size:19px;font-weight:700;color:var(--g);margin:14px 0 7px}
+h4:first-child{margin-top:0}
+p{margin-bottom:10px}
+ul,ol{padding-left:24px;margin-bottom:10px}
+li{margin-bottom:5px}
+
+/* STATUS BAR */
+#sb{position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:10px;padding:7px 22px;background:var(--sf);border-bottom:1px solid var(--bd);font-size:13px}
+.cdot{width:9px;height:9px;border-radius:50%;background:#ccc;flex-shrink:0;transition:background .4s}
+.cdot.on{background:#22a55a}.cdot.off{background:#d33}
+#clbl{color:var(--gs);flex:1}
+#mbadge{padding:3px 12px;border-radius:100px;font-size:13px;font-weight:700;background:var(--gL);color:var(--g)}
+#sstatus{font-size:12px;color:var(--gs2);margin-left:auto}
+
+/* WELCOME */
+#welcome{display:flex;flex-direction:column;align-items:center;min-height:90vh;padding:40px 24px;justify-content:center}
+.wlogo{font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--d);font-weight:700;margin-bottom:26px;text-align:center}
+.wtitle{font-size:34px;font-weight:700;color:var(--g);text-align:center;line-height:1.22;max-width:680px;margin-bottom:8px}
+.wsub{font-size:18px;color:var(--gs);text-align:center;max-width:620px;margin-bottom:34px;line-height:1.6}
+.wstep{font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gs);margin-bottom:14px;text-align:center}
+.mode-grid{display:flex;gap:16px;max-width:600px;width:100%;margin-bottom:28px}
+.mcard{flex:1;border:2px solid var(--bd);border-radius:var(--r);padding:26px 18px;cursor:pointer;text-align:center;background:var(--sf);transition:all .15s;user-select:none}
+.mcard:hover{border-color:var(--g);background:var(--gLL)}
+.mcard.sel{border-color:var(--g);background:var(--gL);box-shadow:0 0 0 3px rgba(107,28,53,.13)}
+.micon{font-size:36px;margin-bottom:12px}
+.mname{font-size:22px;font-weight:700;color:var(--g);margin-bottom:7px}
+.mdesc{font-size:16px;color:var(--gs);line-height:1.5}
+.prop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:700px;width:100%;margin-bottom:28px}
+.pcard{border:2px solid var(--bd);border-radius:var(--r);padding:18px 20px;cursor:pointer;background:var(--sf);transition:all .15s;user-select:none}
+.pcard:hover{border-color:var(--d);background:var(--dL)}
+.pcard.sel{border-color:var(--g);background:var(--gL)}
+.pnum{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--d);margin-bottom:6px}
+.pname{font-size:17px;font-weight:600;color:var(--gr);line-height:1.4}
+.prof-grid{display:flex;gap:16px;max-width:700px;width:100%;margin-bottom:28px;flex-wrap:wrap}
+.prof-sel{flex:1;min-width:220px}
+.prof-sel label{display:block;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gs);margin-bottom:8px}
+.prof-sel select{width:100%;padding:12px 16px;border:2px solid var(--bd);border-radius:var(--rs);font-size:17px;font-family:inherit;color:var(--gr);background:var(--sf)}
+.prof-sel select:focus{outline:none;border-color:var(--g)}
+.btn-start{display:inline-flex;align-items:center;gap:10px;padding:16px 42px;border-radius:var(--r);background:var(--g);color:#fff;font-size:22px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:opacity .15s;margin-top:4px}
+.btn-start:hover{opacity:.87}
+.btn-start:disabled{opacity:.38;cursor:not-allowed}
+
+/* APP */
+#app{display:none;padding:0 0 90px}
+.ahdr{background:var(--g);color:#fff;padding:16px 22px 14px}
+.ahdr-row{display:flex;align-items:center;gap:12px}
+.abk{background:rgba(255,255,255,.18);border:none;color:#fff;padding:6px 14px;border-radius:5px;cursor:pointer;font-size:15px;font-family:inherit;flex-shrink:0}
+.abk:hover{background:rgba(255,255,255,.28)}
+.atitle{font-size:15px;font-weight:600;flex:1;line-height:1.35}
+.asub{font-size:13px;color:rgba(255,255,255,.68);margin-top:3px}
+.pbar{height:5px;background:rgba(255,255,255,.22);border-radius:3px;overflow:hidden;margin-top:10px}
+.pfill{height:100%;background:#fff;border-radius:3px;transition:width .5s}
+
+/* TABS */
+.tw{background:var(--sf);border-bottom:1px solid var(--bd)}
+.ti{display:flex;flex-wrap:wrap;padding:0 22px}
+.tab{padding:11px 16px;border-bottom:3px solid transparent;cursor:pointer;font-size:15px;color:var(--gs);white-space:normal;line-height:1.35;text-align:center;transition:all .15s;font-family:inherit;background:none;border-top:none;border-left:none;border-right:none;max-width:220px}
+.tab:hover{color:var(--g)}
+.tab.active{color:var(--g);border-bottom-color:var(--g);font-weight:700}
+.tab.done::after{content:' ✓';font-size:12px;color:var(--v)}
+
+/* CONTENT */
+.content{max-width:1140px;margin:0 auto;padding:24px 28px 0}
+
+/* MOMENT HEADER */
+.mhdr{display:flex;align-items:flex-start;gap:18px;margin-bottom:20px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:18px 22px}
+.mcirc{width:52px;height:52px;border-radius:50%;background:var(--g);color:#fff;font-size:24px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.minfo{flex:1}
+.mname{font-size:24px;font-weight:700;color:var(--g);margin-bottom:4px}
+.msub{font-size:17px;color:var(--gs)}
+.ta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.td{font-size:42px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1}
+.td.warn{color:var(--warn)}.td.done{color:var(--v)}
+.tmbar{width:110px;height:7px;background:#EEE;border-radius:3px;overflow:hidden}
+.tmfill{height:100%;background:var(--g);border-radius:3px;transition:width .8s linear}
+.tmfill.warn{background:var(--warn)}.tmfill.done{background:var(--v)}
+.tbtns{display:flex;gap:7px}
+.tbtn{padding:7px 15px;border-radius:4px;font-size:15px;cursor:pointer;border:1px solid var(--bd);background:var(--sf);color:var(--gs);font-family:inherit}
+.tbtn.p{background:var(--g);color:#fff;border-color:var(--g)}
+.tbtn:hover{opacity:.8}
+
+/* PREGUNTA */
+.pbox{background:var(--gL);border-left:5px solid var(--g);border-radius:0 var(--r) var(--r) 0;padding:18px 22px;margin:18px 0}
+.plbl{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g);margin-bottom:9px}
+.ptxt{font-size:22px;color:#3A1520;line-height:1.65;font-style:italic;font-weight:500}
+
+/* INFO */
+.ibox{background:var(--dL);border:1px solid #D4B56A;border-radius:var(--r);padding:18px 20px;margin:16px 0;font-size:17px;color:#4A3200;line-height:1.75}
+.ilbl{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--d);margin-bottom:9px}
+
+/* ACTIVIDAD */
+.act{border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin:12px 0}
+.acth{display:flex;align-items:center;gap:14px;padding:15px 18px;cursor:pointer;background:var(--bg);user-select:none}
+.acth:hover{background:#ECE8E1}
+.actn{width:32px;height:32px;border-radius:50%;background:var(--d);color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.acttl{font-size:17px;font-weight:700;flex:1}
+.actm{font-size:14px;color:var(--gs);white-space:nowrap}
+.actch{font-size:18px;color:var(--gs);transition:transform .2s}
+.actch.open{transform:rotate(180deg)}
+.actb{display:none;padding:18px 20px;background:var(--sf)}
+.actb.open{display:block}
+.actb p{font-size:17px;color:var(--gs);line-height:1.8;margin-bottom:10px}
+.actb ul,.actb ol{font-size:17px;color:var(--gs);padding-left:24px;margin-bottom:10px;line-height:1.8}
+.actb strong{color:var(--gr)}
+
+/* LECTURA */
+.lectura{background:#FAFAF7;border:1px solid #C8C2B8;border-radius:var(--r);margin:16px 0;overflow:hidden;font-size:17px}
+.lfuente{font-size:14px;font-weight:700;color:var(--g);padding:11px 18px;background:var(--gL);border-bottom:1px solid #C8C2B8}
+.lnota{font-size:14px;color:var(--d);padding:8px 18px;background:var(--dL);border-bottom:1px solid #D4B56A;font-style:italic}
+.lcuerpo{padding:18px 20px;line-height:1.85}
+.lcuerpo h4{font-size:18px}
+
+/* INSTRUMENTOS */
+.instrumento{background:var(--sf);border:1px solid #C8C2B8;border-radius:var(--r);margin:16px 0;overflow:hidden;font-size:16px}
+.ihdr{padding:13px 18px;font-size:17px;font-weight:700;color:#fff}
+.iA{background:#5C2D7A}.iB{background:#1A6B3A}.iC{background:#8B4513}.iD{background:#1A4A6B}
+.imeta{font-size:14px;color:var(--gs);padding:8px 18px;background:#F7F7F5;border-bottom:1px solid #E8E4DC}
+.iaviso{font-size:14px;color:var(--d);padding:8px 18px;background:var(--dL);border-bottom:1px solid #D4B56A;font-style:italic}
+.itbl{width:100%;border-collapse:collapse;font-size:16px}
+.itbl th{background:var(--g);color:#fff;padding:10px 14px;text-align:left;font-size:15px}
+.itbl td{border:1px solid #DDD;padding:10px 14px;vertical-align:top;line-height:1.6}
+.itbl tr:nth-child(even) td{background:#FAFAF7}
+.ires{font-size:14px;padding:11px 18px;background:#F3F0EB;border-top:1px solid #DDD}
+
+/* NOTA */
+.nota{background:var(--vL);border-left:5px solid var(--v);border-radius:0 var(--rs) var(--rs) 0;padding:14px 18px;font-size:17px;color:#0F2E1A;line-height:1.75;margin:14px 0}
+.nlbl{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--v);margin-bottom:7px}
+
+/* RESPUESTA */
+.rlbl{font-size:17px;font-weight:700;color:var(--g);margin-bottom:8px;display:flex;align-items:center;gap:7px;margin-top:14px}
+.rlbl::before{content:'✏';font-size:16px}
+textarea.resp{width:100%;border:2px solid var(--bd);border-radius:var(--rs);padding:13px 16px;font-size:17px;font-family:inherit;color:var(--gr);line-height:1.75;resize:vertical;min-height:105px;background:var(--sf);transition:border-color .15s}
+textarea.resp:focus{outline:none;border-color:var(--g);background:#FFFCFD}
+textarea.resp.saved{border-color:#22a55a}
+
+/* SCALE */
+.scrow{display:flex;align-items:center;gap:12px;margin:12px 0;flex-wrap:wrap}
+.sclbl{font-size:17px;color:var(--gr);flex:1;min-width:200px}
+input[type=range]{flex:1;min-width:80px;max-width:180px;accent-color:var(--g)}
+.scval{font-size:22px;font-weight:700;color:var(--g);min-width:34px;text-align:center}
+
+/* TOOLS */
+.tsec{background:var(--dL);border-radius:var(--r);padding:16px 18px;margin:16px 0}
+.thead{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--d);margin-bottom:11px}
+.tbtn2{display:inline-flex;align-items:center;gap:9px;padding:10px 22px;border-radius:100px;border:1.5px solid var(--d);color:#5A3D00;font-size:17px;font-weight:600;margin:3px 4px 3px 0;background:rgba(139,105,20,.09);cursor:pointer;text-decoration:none;transition:all .15s}
+.tbtn2:hover{background:rgba(139,105,20,.2);text-decoration:none}
+
+/* SEC LABEL */
+.slbl{font-size:14px;font-weight:700;color:var(--gs);text-transform:uppercase;letter-spacing:.07em;margin:16px 0 9px}
+
+/* META */
+.metasec{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:20px 22px;margin:16px 0}
+.mttl{font-size:24px;font-weight:700;color:var(--g);margin-bottom:6px}
+.mtsub{font-size:17px;color:var(--gs);margin-bottom:18px;line-height:1.65}
+.mqitem{border:1px solid var(--bd);border-radius:var(--rs);padding:15px 18px;margin:12px 0;background:var(--bg)}
+.mqn{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gs);margin-bottom:7px}
+.mqtxt{font-size:17px;font-style:italic;color:var(--gr);margin-bottom:13px;line-height:1.65}
+
+/* RUBRICA */
+.rwrap{overflow-x:auto;margin:12px 0}
+table.rub{width:100%;border-collapse:collapse;font-size:17px}
+table.rub th{background:var(--g);color:#fff;padding:11px 14px;text-align:left;font-weight:700}
+table.rub td{border:1px solid var(--bd);padding:11px 14px;vertical-align:top;line-height:1.6}
+table.rub tr:nth-child(even) td{background:var(--gLL)}
+table.rub td:first-child{font-weight:700;color:var(--g);background:var(--gL)!important;width:18%}
+
+/* COMPROMISO */
+.cbox{background:var(--gL);border:2px solid var(--g);border-radius:var(--r);padding:20px 22px;margin:18px 0}
+.ctitle{font-size:22px;font-weight:700;color:var(--g);margin-bottom:15px;text-transform:uppercase;letter-spacing:.04em}
+
+/* NAV */
+.navbtns{display:flex;gap:14px;margin:24px 0;justify-content:space-between}
+.nvb{display:inline-flex;align-items:center;gap:9px;padding:11px 26px;border-radius:var(--rs);font-size:17px;font-weight:700;cursor:pointer;border:1.5px solid var(--bd);background:var(--sf);color:var(--gr);font-family:inherit;transition:all .15s}
+.nvb:hover{border-color:var(--g);color:var(--g)}
+.nvb.prim{background:var(--g);color:#fff;border-color:var(--g)}
+.nvb.prim:hover{opacity:.87}
+
+/* EXPORT BAR */
+.ebar{position:fixed;bottom:0;left:0;right:0;background:var(--sf);border-top:1px solid var(--bd);padding:12px 28px;display:flex;gap:12px;align-items:center;z-index:99;box-shadow:0 -2px 12px rgba(0,0,0,.09)}
+.ebtn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:var(--rs);font-size:17px;font-weight:700;cursor:pointer;border:1.5px solid;font-family:inherit;transition:opacity .15s}
+.ebp{background:var(--g);color:#fff;border-color:var(--g)}
+.ebo{background:var(--sf);color:var(--gr);border-color:var(--bd)}
+.ebtn:hover{opacity:.82}
+
+/* MODALS */
+.mbg{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.48);align-items:center;justify-content:center}
+.mbg.show{display:flex}
+.mbox{background:var(--sf);border-radius:var(--r);padding:30px 36px;max-width:460px;width:92%}
+.mtitle{font-size:24px;font-weight:700;color:var(--g);margin-bottom:9px}
+.mbody{font-size:17px;color:var(--gs);line-height:1.7;margin-bottom:22px}
+.minput{width:100%;padding:13px 16px;border:2px solid var(--bd);border-radius:var(--rs);font-size:18px;font-family:inherit;margin-bottom:9px}
+.minput:focus{outline:none;border-color:var(--g)}
+.merr{font-size:15px;color:#d33;margin-bottom:13px;display:none}
+.mrow{display:flex;gap:12px}
+.mok{padding:11px 26px;border-radius:var(--rs);background:var(--g);color:#fff;border:none;cursor:pointer;font-size:17px;font-weight:700;font-family:inherit}
+.mcanc{padding:11px 26px;border-radius:var(--rs);background:transparent;color:var(--gs);border:1px solid var(--bd);cursor:pointer;font-size:17px;font-family:inherit}
+
+@media print{
+  #sb,.ebar,.tw,.tbtns,.tbtn,.tbtn2,.actch,#conn-modal,#pwd-modal{display:none!important}
+  .actb{display:block!important}
+  textarea.resp{border:1px solid #ccc!important;height:auto!important;min-height:60px!important}
+  body{font-size:13px}
+}
+@media(max-width:600px){
+  .mode-grid{flex-direction:column}
+  .prop-grid{grid-template-columns:1fr}
+  .mhdr{flex-wrap:wrap}
+  .ta{flex-direction:row;width:100%;justify-content:flex-end;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<div id="sb">
+  <div class="cdot" id="cdot"></div>
+  <span id="clbl">Verificando conexión…</span>
+  <span id="mbadge">—</span>
+  <span id="sstatus"></span>
+</div>
+
+<div class="mbg" id="conn-modal">
+  <div class="mbox">
+    <div class="mtitle">⚠ Sin conexión</div>
+    <div class="mbody">Esta función requiere internet. Las respuestas se guardan automáticamente en este dispositivo.</div>
+    <button class="mok" onclick="document.getElementById('conn-modal').classList.remove('show')">Entendido</button>
+  </div>
+</div>
+
+<div class="mbg" id="pwd-modal">
+  <div class="mbox">
+    <div class="mtitle">🔐 Acceso para Acompañante</div>
+    <div class="mbody">Ingresa la contraseña para acceder al rol de Acompañante. Si no cuentas con ella, selecciona el rol de Participante.</div>
+    <input class="minput" type="password" id="pwd-input" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkPwd()">
+    <div class="merr" id="pwd-err">Contraseña incorrecta. Verifica e intenta de nuevo.</div>
+    <div class="mrow">
+      <button class="mok" onclick="checkPwd()">Ingresar</button>
+      <button class="mcanc" onclick="cancelPwd()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div id="welcome">
+  <div class="wlogo">Ernesto Javier Estrella Alcocer · Jefe de Enseñanza de Secundarias Técnicas</div>
+  <div class="wtitle">Estrategias Formativas Interactivas</div>
+  <div class="wsub">Cuatro propuestas dialógicas para el acompañamiento pedagógico en la Nueva Escuela Mexicana · 120 minutos cada una</div>
+
+  <div class="wstep">1. Selecciona tu rol</div>
+  <div class="mode-grid">
+    <div class="mcard" data-mode="acompanante" onclick="selectMode(this)">
+      <div class="micon">🧭</div>
+      <div class="mname">Acompañante</div>
+      <div class="mdesc">Facilitador de la sesión: tiempos, notas del proceso y guía de actividades</div>
+    </div>
+    <div class="mcard" data-mode="participante" onclick="selectMode(this)">
+      <div class="micon">📝</div>
+      <div class="mname">Participante</div>
+      <div class="mdesc">Actividades, lecturas y espacios de escritura personal</div>
+    </div>
+  </div>
+
+  <div class="wstep">2. Selecciona la propuesta</div>
+  <div class="prop-grid">
+    <div class="pcard" data-prop="0" onclick="selectProp(this)">
+      <div class="pnum">Propuesta 1</div>
+      <div class="pname">Fundamentos de la NEM y arquitectura curricular del PE 2022</div>
+    </div>
+    <div class="pcard" data-prop="1" onclick="selectProp(this)">
+      <div class="pnum">Propuesta 2</div>
+      <div class="pname">El Programa Analítico: estructura, sentido y construcción colegiada</div>
+    </div>
+    <div class="pcard" data-prop="2" onclick="selectProp(this)">
+      <div class="pnum">Propuesta 3</div>
+      <div class="pname">Planeación didáctica interdisciplinaria: el proyecto comunitario</div>
+    </div>
+    <div class="pcard" data-prop="3" onclick="selectProp(this)">
+      <div class="pnum">Propuesta 4</div>
+      <div class="pname">Evaluación formativa: criterios, instrumentos y rúbricas</div>
+    </div>
+  </div>
+
+  <div class="wstep" id="prof-step" style="display:none">3. Tu perfil (para el reporte)</div>
+  <div class="prof-grid" id="prof-grid" style="display:none">
+    <div class="prof-sel">
+      <label>Función</label>
+      <select id="sel-fn" onchange="checkReady()">
+        <option value="">— Selecciona —</option>
+        <option>Supervisor(a)</option>
+        <option>Jefe(a) de Enseñanza</option>
+        <option>ATP</option>
+        <option>Director(a)</option>
+        <option>Subdirector(a)</option>
+        <option>Coordinador(a)</option>
+        <option>Docente</option>
+      </select>
+    </div>
+    <div class="prof-sel">
+      <label>Nivel educativo</label>
+      <select id="sel-nv" onchange="checkReady()">
+        <option value="">— Selecciona —</option>
+        <option>Inicial</option>
+        <option>Preescolar</option>
+        <option>Preescolar Indígena</option>
+        <option>Primaria</option>
+        <option>Primaria Indígena</option>
+        <option>Secundaria General</option>
+        <option>Secundaria Técnica</option>
+        <option>Secundaria Estatal</option>
+        <option>Telesecundaria</option>
+        <option>Educación Especial</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn-start" id="btn-start" disabled onclick="startSession()">Iniciar sesión →</button>
+</div>
+
+<div id="app">
+  <div class="ahdr">
+    <div class="ahdr-row">
+      <button class="abk" onclick="goHome()">← Inicio</button>
+      <div><div class="atitle" id="ah-title"></div><div class="asub" id="ah-sub"></div></div>
+    </div>
+    <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+  </div>
+  <div class="tw"><div class="ti" id="tabs-inner"></div></div>
+  <div class="content" id="mcontent"></div>
+  <div class="ebar">
+    <button class="ebtn ebo" onclick="exportTxt()">⬇ Descargar respuestas</button>
+    <button class="ebtn ebp" onclick="exportPDF()">📄 Exportar a PDF</button>
+  </div>
+</div>
+
+<script>
+// ── CONTRASEÑA (base64 ofuscada) ──
+const PH = 'MzFGWlQwMDAySA==';
+function checkPwd(){
+  const v = document.getElementById('pwd-input').value;
+  const e = document.getElementById('pwd-err');
+  if(btoa(v)===PH){
+    document.getElementById('pwd-modal').classList.remove('show');
+    document.getElementById('pwd-input').value='';
+    e.style.display='none';
+    S.mode='acompanante';
+    document.querySelectorAll('.mcard').forEach(c=>c.classList.toggle('sel',c.dataset.mode==='acompanante'));
+    document.getElementById('prof-step').style.display='none';
+    document.getElementById('prof-grid').style.display='none';
+    checkReady();
+  } else {
+    e.style.display='block';
+    document.getElementById('pwd-input').select();
+  }
+}
+function cancelPwd(){
+  document.getElementById('pwd-modal').classList.remove('show');
+  document.getElementById('pwd-input').value='';
+  document.getElementById('pwd-err').style.display='none';
+  document.querySelectorAll('.mcard').forEach(c=>c.classList.remove('sel'));
+  S.mode=null;
+  checkReady();
+}
+
+// ── ESTADO GLOBAL ──
+const S={mode:null,propIdx:null,mIdx:0,timers:[],intId:null,online:navigator.onLine};
+
+// ── CONECTIVIDAD ──
+function updConn(){
+  S.online=navigator.onLine;
+  document.getElementById('cdot').className='cdot '+(S.online?'on':'off');
+  document.getElementById('clbl').textContent=S.online?'Conectado a internet':'Sin conexión — respuestas guardadas localmente';
+}
+window.addEventListener('online',updConn);
+window.addEventListener('offline',updConn);
+updConn();
+
+// ── AUDIO ──
+let audioCtx=null;
+function initAudio(){if(!audioCtx)try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}
+document.addEventListener('click',initAudio,{once:true});
+function playBeep(){
+  if(!audioCtx)return;
+  [0,0.5,1].forEach(d=>{
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.connect(g);g.connect(audioCtx.destination);
+    o.frequency.value=660;o.type='sine';
+    g.gain.setValueAtTime(0,audioCtx.currentTime+d);
+    g.gain.linearRampToValueAtTime(0.4,audioCtx.currentTime+d+0.05);
+    g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+d+0.45);
+    o.start(audioCtx.currentTime+d);o.stop(audioCtx.currentTime+d+0.5);
+  });
+}
+
+// ── SELECCIÓN DE MODO Y PROPUESTA ──
+function selectMode(el){
+  if(el.dataset.mode==='acompanante'){
+    document.getElementById('pwd-modal').classList.add('show');
+    setTimeout(()=>document.getElementById('pwd-input').focus(),100);
+    return;
+  }
+  S.mode='participante';
+  document.querySelectorAll('.mcard').forEach(c=>c.classList.toggle('sel',c===el));
+  document.getElementById('prof-step').style.display='block';
+  document.getElementById('prof-grid').style.display='flex';
+  checkReady();
+}
+function selectProp(el){
+  document.querySelectorAll('.pcard').forEach(c=>c.classList.toggle('sel',c===el));
+  S.propIdx=parseInt(el.dataset.prop);
+  checkReady();
+}
+function checkReady(){
+  const isP=S.mode==='participante';
+  const fnOk=!isP||document.getElementById('sel-fn').value;
+  const nvOk=!isP||document.getElementById('sel-nv').value;
+  document.getElementById('btn-start').disabled=!(S.mode&&S.propIdx!==null&&fnOk&&nvOk);
+}
+
+// ── INICIO DE SESIÓN ──
+function startSession(){
+  const p=PROPS[S.propIdx];
+  S.mIdx=0;
+  if(!S.timers[S.propIdx]) S.timers[S.propIdx]=p.momentos.map(m=>({total:m.min*60,elapsed:0,running:false,done:false}));
+  document.getElementById('welcome').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('mbadge').textContent={acompanante:'Acompañante',participante:'Participante'}[S.mode];
+  document.getElementById('ah-title').textContent=p.titulo;
+  const fn=document.getElementById('sel-fn').value;
+  const nv=document.getElementById('sel-nv').value;
+  document.getElementById('ah-sub').textContent='Propuesta '+p.id+' · '+([fn,nv].filter(Boolean).join(' · ')||S.mode);
+  buildTabs();renderM();
+}
+function goHome(){
+  if(S.intId){clearInterval(S.intId);S.intId=null;}
+  if(S.timers[S.propIdx]) S.timers[S.propIdx].forEach(t=>t.running=false);
+  document.getElementById('app').style.display='none';
+  document.getElementById('welcome').style.display='flex';
+}
+
+// ── TABS ──
+function buildTabs(){
+  const p=PROPS[S.propIdx];
+  const ts=S.timers[S.propIdx];
+  document.getElementById('tabs-inner').innerHTML=
+    p.momentos.map((m,i)=>`<button class="tab${i===S.mIdx?' active':''}${ts[i].done?' done':''}" onclick="goM(${i})">Momento ${m.n} · ${m.nombre}</button>`).join('')+
+    `<button class="tab${S.mIdx===5?' active':''}" onclick="goM(5)">✦ Metacognición</button>`;
+}
+function goM(i){S.mIdx=i;buildTabs();renderM();window.scrollTo(0,0);}
+
+function updProg(){
+  const ts=S.timers[S.propIdx];
+  const tot=ts.reduce((a,t)=>a+t.total,0);
+  const el=ts.reduce((a,t)=>a+Math.min(t.elapsed,t.total),0);
+  document.getElementById('pfill').style.width=Math.round(el/tot*100)+'%';
+}
+
+// ── TIMER ──
+function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function timerStart(){
+  const t=S.timers[S.propIdx][S.mIdx];
+  if(t.done||t.running)return;
+  t.running=true;
+  S.intId=setInterval(()=>{
+    const tt=S.timers[S.propIdx][S.mIdx];
+    if(!tt.running)return;
+    tt.elapsed=Math.min(tt.elapsed+1,tt.total);
+    if(tt.elapsed>=tt.total){tt.done=true;tt.running=false;clearInterval(S.intId);S.intId=null;playBeep();buildTabs();}
+    updTimerUI();updProg();
+  },1000);
+  updTimerUI();
+}
+function timerPause(){
+  S.timers[S.propIdx][S.mIdx].running=false;
+  if(S.intId){clearInterval(S.intId);S.intId=null;}
+  updTimerUI();
+}
+function timerReset(){
+  const t=S.timers[S.propIdx][S.mIdx];
+  if(S.intId){clearInterval(S.intId);S.intId=null;}
+  t.running=false;t.elapsed=0;t.done=false;
+  updTimerUI();updProg();buildTabs();
+}
+function updTimerUI(){
+  const t=S.timers[S.propIdx][S.mIdx];
+  const rem=t.total-t.elapsed;
+  const cl=t.done?'done':(t.elapsed>0&&rem<=120?'warn':'');
+  const pct=Math.min(100,Math.round(t.elapsed/t.total*100));
+  const d=document.getElementById('tdsp');
+  const b=document.getElementById('tmfll');
+  const br=document.getElementById('tbtns');
+  if(d){d.textContent=t.done?'✓ Listo':fmt(rem);d.className='td '+cl;}
+  if(b){b.style.width=pct+'%';b.className='tmfill '+cl;}
+  if(br){
+    if(t.done) br.innerHTML='<button class="tbtn" onclick="timerReset()">↺ Reiniciar</button>';
+    else if(t.running) br.innerHTML='<button class="tbtn" onclick="timerPause()">⏸ Pausar</button><button class="tbtn" onclick="timerReset()">↺</button>';
+    else br.innerHTML='<button class="tbtn p" onclick="timerStart()">▶ '+(t.elapsed>0?'Reanudar':'Iniciar')+'</button>'+(t.elapsed>0?'<button class="tbtn" onclick="timerReset()">↺</button>':'');
+  }
+}
+
+// ── STORAGE ──
+let saveTO=null;
+function getR(k){try{return localStorage.getItem('r_'+k)||'';}catch(e){return '';}}
+function setR(k,v){try{localStorage.setItem('r_'+k,v);}catch(e){}document.getElementById('sstatus').textContent='Guardado '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});}
+function autoSave(k,el){clearTimeout(saveTO);el.classList.remove('saved');saveTO=setTimeout(()=>{setR(k,el.value);el.classList.add('saved');setTimeout(()=>el.classList.remove('saved'),1500);},700);}
+function getSc(k){try{return localStorage.getItem('sc_'+k)||'5';}catch(e){return '5';}}
+function setSc(k,v){try{localStorage.setItem('sc_'+k,v);}catch(e){}document.getElementById('sstatus').textContent='Guardado';}
+
+// ── RENDER MOMENTO ──
+const isAc=()=>S.mode==='acompanante';
+function renderM(){
+  if(S.mIdx===5){renderMeta();return;}
+  const p=PROPS[S.propIdx];const m=p.momentos[S.mIdx];const t=S.timers[S.propIdx][S.mIdx];
+  const rem=t.total-t.elapsed;const cl=t.done?'done':(t.elapsed>0&&rem<=120?'warn':'');
+  const pct=Math.min(100,Math.round(t.elapsed/t.total*100));
+  let h='';
+
+  if(S.mIdx===0&&!isAc()){
+    h+=`<div class="ibox"><div class="ilbl">Propósito de la sesión</div>${p.proposito}</div>`;
+    h+=`<div class="ibox"><div class="ilbl">Encuadre temático</div>${p.encuadre}</div>`;
+  }
+
+  h+=`<div class="mhdr">
+    <div class="mcirc">${m.n}</div>
+    <div class="minfo"><div class="mname">${m.nombre}</div><div class="msub">Duración prevista: ${m.min} minutos</div></div>
+    <div class="ta">
+      <div class="td ${cl}" id="tdsp">${t.done?'✓ Listo':fmt(rem)}</div>
+      <div class="tmbar"><div class="tmfill ${cl}" id="tmfll" style="width:${pct}%"></div></div>
+      <div class="tbtns" id="tbtns"></div>
+    </div>
+  </div>`;
+
+  h+=`<div class="pbox"><div class="plbl">Pregunta detonadora</div><div class="ptxt">${m.pregunta}</div></div>`;
+
+  m.actividades.forEach((a,ai)=>{
+    const k='act_'+S.propIdx+'_'+S.mIdx+'_'+ai;
+    h+=`<div class="act"><div class="acth" onclick="toggleAct('${k}')">
+      <div class="actn">${ai+1}</div><div class="acttl">${a.t}</div>
+      <div class="actm">${a.time}</div>
+      <span class="actch" id="ch_${k}">▾</span>
+    </div><div class="actb" id="bd_${k}">`;
+
+    if(a.inst) h+=`<div style="margin-bottom:12px">${a.inst}</div>`;
+
+    // LECTURAS EMBEBIDAS
+    if(a.lectura) h+=TEXTS[a.lectura]||'';
+
+    // INSTRUMENTOS P4
+    if(a.instrumentos) a.instrumentos.forEach(ik=>{ h+=TEXTS[ik]||''; });
+
+    // SCALES (modo participante)
+    if(a.scales&&!isAc()){
+      h+='<div style="margin:12px 0">';
+      a.scales.forEach(sc=>{
+        const sv=getSc(sc.k);
+        h+=`<div class="scrow"><span class="sclbl">${sc.l}</span><input type="range" min="0" max="10" step="1" value="${sv}" oninput="this.nextElementSibling.textContent=this.value;setSc('${sc.k}',this.value)"><span class="scval">${sv}</span></div>`;
+      });
+      h+='</div>';
+    }
+
+    // INPUTS
+    if(a.inputs&&!isAc()) a.inputs.forEach(inp=>{
+      const val=getR(inp.k);
+      h+=`<div class="rlbl">${inp.l}</div><textarea class="resp" rows="${inp.r}" placeholder="${inp.ph}" oninput="autoSave('${inp.k}',this)">${val}</textarea>`;
+    });
+
+    h+='</div></div>';
+  });
+
+  if(m.nota&&isAc()) h+=`<div class="nota"><div class="nlbl">Nota para el acompañante</div>${m.nota}</div>`;
+
+  if(m.tool&&!isAc()){
+    h+=`<div class="tsec"><div class="thead">Herramienta en línea para este momento</div>`;
+    if(!S.online) h+=`<p style="font-size:13px;color:var(--warn);margin-bottom:8px">⚠ Sin conexión — el enlace estará disponible cuando recuperes internet.</p>`;
+    h+=`<a class="tbtn2" href="${m.tool.url}" onclick="return chkOnl(event)" target="_blank" rel="noopener">📄 ${m.tool.l}</a></div>`;
+  }
+
+  h+=`<div class="navbtns">
+    ${S.mIdx>0?`<button class="nvb" onclick="goM(${S.mIdx-1})">← Momento anterior</button>`:'<span></span>'}
+    ${S.mIdx<4?`<button class="nvb prim" onclick="goM(${S.mIdx+1})">Siguiente momento →</button>`:`<button class="nvb prim" onclick="goM(5)">✦ Ir a Metacognición →</button>`}
+  </div>`;
+
+  document.getElementById('mcontent').innerHTML=h;
+  updTimerUI();updProg();
+}
+
+function toggleAct(k){
+  const b=document.getElementById('bd_'+k);const c=document.getElementById('ch_'+k);
+  const o=b.classList.toggle('open');
+  c.className='actch'+(o?' open':'');c.textContent=o?'▴':'▾';
+}
+function chkOnl(e){if(!S.online){e.preventDefault();document.getElementById('conn-modal').classList.add('show');return false;}return true;}
+
+// ── RENDER METACOGNICIÓN ──
+function renderMeta(){
+  const p=PROPS[S.propIdx];const meta=p.momentos[4].meta;
+  let h='';
+
+  h+=`<div class="metasec"><div class="mttl">✦ Metacognición — Bitácora final</div>
+  <div class="mtsub">${meta.inst}</div>`;
+
+  meta.preguntas.forEach(q=>{
+    const ck=getR(q.k+'_chk')==='1';const val=getR(q.k);
+    h+=`<div class="mqitem">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <input type="checkbox" id="chk_${q.k}" ${ck?'checked':''} style="margin-top:4px;accent-color:var(--g);width:17px;height:17px;flex-shrink:0" onchange="setR('${q.k}_chk',this.checked?'1':'0');document.getElementById('mta_${q.k}').style.display=this.checked?'block':'none'">
+        <div style="flex:1">
+          <div class="mqn">Pregunta ${q.n}</div>
+          <div class="mqtxt">${q.q}</div>
+          <div id="mta_${q.k}" style="display:${ck?'block':'none'}">
+            <textarea class="resp" rows="4" placeholder="Tu respuesta…" oninput="autoSave('${q.k}',this)">${val}</textarea>
+          </div>
+        </div>
+      </div></div>`;
+  });
+  h+='</div>';
+
+  // Rúbrica de autoevaluación
+  h+=`<div class="metasec"><div class="mttl">Rúbrica de autoevaluación del proceso</div>
+  <div class="mtsub">La persona participante valora su propio proceso. La persona acompañante la usa como insumo para retroalimentar al cierre.</div>
+  <div class="rwrap"><table class="rub">
+  <tr><th>Criterio</th><th>Óptimo</th><th>Satisfactorio</th><th>En proceso</th></tr>`;
+  meta.rubrica.forEach(r=>{h+=`<tr><td>${r.c}</td><td>${r.o}</td><td>${r.s}</td><td>${r.p}</td></tr>`;});
+  h+='</table></div>';
+
+  if(!isAc()){
+    h+='<div style="margin-top:14px">';
+    meta.rubrica.forEach((r,ri)=>{
+      const sk='meta_auto_'+S.propIdx+'_'+ri;const sv=getR(sk);
+      h+=`<div style="margin-bottom:14px">
+        <div style="font-size:15px;font-weight:700;color:var(--g);margin-bottom:7px">${r.c}</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          ${['Óptimo','Satisfactorio','En proceso'].map(nv=>`<label style="display:flex;align-items:center;gap:6px;font-size:15px;cursor:pointer"><input type="radio" name="${sk}" value="${nv}" ${sv===nv?'checked':''} onchange="setR('${sk}','${nv}')" style="accent-color:var(--g);width:16px;height:16px"> ${nv}</label>`).join('')}
+        </div></div>`;
+    });
+    h+='</div>';
+  }
+  h+='</div>';
+
+  if(!isAc()){
+    const cv=getR(meta.comp.k);
+    h+=`<div class="cbox"><div class="ctitle">Mi compromiso concreto</div>
+    <div class="rlbl">${meta.comp.l}</div>
+    <textarea class="resp" rows="4" placeholder="Una acción · Un plazo · Un criterio de seguimiento" oninput="autoSave('${meta.comp.k}',this)">${cv}</textarea></div>`;
+  }
+
+  h+=`<div class="navbtns"><button class="nvb" onclick="goM(4)">← Momento 5</button><span></span></div>`;
+  document.getElementById('mcontent').innerHTML=h;
+}
+
+// ── EXPORTAR TXT ──
+function getAllResp(){
+  const p=PROPS[S.propIdx];
+  const fn=document.getElementById('sel-fn').value||'—';
+  const nv=document.getElementById('sel-nv').value||'—';
+  const fecha=new Date().toLocaleDateString('es-MX',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  let t=`REGISTRO DE RESPUESTAS\n${'='.repeat(55)}\nPropuesta: ${p.id} — ${p.titulo}\nFecha: ${fecha}\nRol: ${S.mode==='participante'?'Participante':'Acompañante'}\nFunción: ${fn} · Nivel: ${nv}\n${'='.repeat(55)}\n\n`;
+  p.momentos.forEach((m,mi)=>{
+    t+=`MOMENTO ${m.n}: ${m.nombre}\n${'-'.repeat(40)}\n`;
+    m.actividades.forEach(a=>{
+      if(a.inputs) a.inputs.forEach(inp=>{const v=getR(inp.k);if(v)t+=`\n${inp.l}\n${v}\n`;});
+      if(a.scales) a.scales.forEach(sc=>{t+=`\n${sc.l}: ${getSc(sc.k)}/10`;});
+    });
+    t+='\n';
+  });
+  const meta=p.momentos[4].meta;
+  t+=`\nMETACOGNICIÓN\n${'-'.repeat(40)}\n`;
+  meta.preguntas.forEach(q=>{const v=getR(q.k);if(v)t+=`\nPregunta ${q.n}: ${q.q}\n${v}\n`;});
+  const cv=getR(meta.comp.k);if(cv)t+=`\nMI COMPROMISO:\n${cv}\n`;
+  return t;
+}
+function exportTxt(){
+  const txt=getAllResp();
+  const b=new Blob([txt],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(b);
+  a.download=`Respuestas_P${PROPS[S.propIdx].id}_${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+}
+
+// ── EXPORTAR PDF ──
+function exportPDF(){
+  const p=PROPS[S.propIdx];
+  const fn=document.getElementById('sel-fn').value||'—';
+  const nv=document.getElementById('sel-nv').value||'—';
+  const fecha=new Date().toLocaleDateString('es-MX',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  let body='';
+  p.momentos.forEach((m,mi)=>{
+    body+=`<h3 style="color:#6B1C35;margin:20px 0 8px;font-size:16px">Momento ${m.n}: ${m.nombre}</h3>`;
+    m.actividades.forEach(a=>{
+      if(a.inputs) a.inputs.forEach(inp=>{
+        const v=getR(inp.k);
+        body+=`<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:#555;margin-bottom:4px">${inp.l}</div>`;
+        body+=v?`<div style="border:1px solid #CCC;border-radius:4px;padding:10px;font-size:13px;line-height:1.6;background:#FAFAF7;white-space:pre-wrap">${v}</div>`:`<div style="border:1px dashed #CCC;border-radius:4px;padding:10px;font-size:12px;color:#AAA;font-style:italic">Sin respuesta</div>`;
+        body+='</div>';
+      });
+      if(a.scales) a.scales.forEach(sc=>{
+        body+=`<div style="margin-bottom:8px;font-size:13px"><strong>${sc.l}:</strong> ${getSc(sc.k)}/10</div>`;
+      });
+    });
+  });
+  const meta=p.momentos[4].meta;
+  body+=`<h3 style="color:#6B1C35;margin:20px 0 8px;font-size:16px">✦ Metacognición</h3>`;
+  meta.preguntas.forEach(q=>{
+    const v=getR(q.k);if(!v)return;
+    body+=`<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:#555;margin-bottom:4px">Pregunta ${q.n}: ${q.q}</div><div style="border:1px solid #CCC;border-radius:4px;padding:10px;font-size:13px;line-height:1.6;background:#FAFAF7;white-space:pre-wrap">${v}</div></div>`;
+  });
+  const cv=getR(meta.comp.k);
+  if(cv) body+=`<div style="background:#F4E5E9;border:2px solid #6B1C35;border-radius:6px;padding:14px;margin-top:16px"><div style="font-size:12px;font-weight:700;color:#6B1C35;margin-bottom:6px;text-transform:uppercase">Mi compromiso concreto</div><div style="font-size:14px;line-height:1.6;white-space:pre-wrap">${cv}</div></div>`;
+
+  const win=window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Reporte — Propuesta ${p.id}</title><style>body{font-family:Arial,sans-serif;color:#1A1A1A;padding:32px 40px;max-width:820px;margin:0 auto}h1{color:#6B1C35;font-size:20px;margin-bottom:4px}h2{color:#8B6914;font-size:14px;font-weight:400;margin-bottom:20px}hr{border:none;border-top:2px solid #6B1C35;margin:16px 0}h3{page-break-before:auto}@media print{body{padding:16px 24px}}table{border-collapse:collapse;width:100%}td,th{border:1px solid #DDD;padding:7px 10px;font-size:12px}</style></head><body>
+<h1>Propuesta ${p.id} — ${p.titulo}</h1>
+<h2>Fecha: ${fecha} &nbsp;·&nbsp; Función: ${fn} &nbsp;·&nbsp; Nivel: ${nv} &nbsp;·&nbsp; Rol: ${S.mode==='participante'?'Participante':'Acompañante'}</h2>
+<hr>${body}
+<hr><p style="font-size:11px;color:#999;margin-top:16px;text-align:center">Ernesto Javier Estrella Alcocer · Jefe de Enseñanza de Secundarias Técnicas · Mérida, Yucatán</p>
+<script>window.onload=function(){setTimeout(function(){window.print();},400);}<\/script></body></html>`);
+  win.document.close();
+}
+
+// ── TEXTOS DE LECTURA ──
+const TEXTS={
+
+p1_m2:`<div class="lectura"><div class="lfuente">Secretaría de Educación Pública (2022) · Plan de Estudio para la educación preescolar, primaria y secundaria · Fragmento seleccionado</div><div class="lnota">Usa las marcas acordadas: Subrayar lo familiar · Encerrar en círculo lo que genera duda · Marcar con ! lo que genera resistencia.</div><div class="lcuerpo">
+<h4>Los campos formativos</h4>
+<p>El Plan de Estudio 2022 organiza los contenidos educativos en cuatro <strong>campos formativos</strong>, que no equivalen a asignaturas ni a áreas de conocimiento tradicionales. Son ámbitos de la experiencia humana que permiten integrar saberes de distinto origen en torno a situaciones reales y significativas:</p>
+<ul>
+<li><strong>Lenguajes.</strong> Comprende las distintas formas en que las personas se comunican, expresan y representan el mundo: lengua oral y escrita, lenguas originarias, matemáticas como lenguaje formal, artes y lenguajes digitales. Su desarrollo no es exclusivo de ninguna asignatura.</li>
+<li><strong>Saberes y pensamiento científico.</strong> Integra el conocimiento de los fenómenos naturales y sociales, el pensamiento lógico-matemático y el razonamiento científico. Parte del principio de que la ciencia es una forma de construir conocimiento, no un conjunto de verdades que se transmiten.</li>
+<li><strong>Ética, naturaleza y sociedades.</strong> Aborda las relaciones entre personas, comunidades, territorio y mundo natural. Recupera la dimensión ética de la convivencia, los derechos humanos, la interculturalidad y la responsabilidad con el entorno.</li>
+<li><strong>De lo humano y lo comunitario.</strong> Centra la mirada en la persona como sujeto que pertenece a una comunidad y a una historia. Comprende la formación socioemocional, la educación física, la cultura y la identidad personal y colectiva.</li>
+</ul>
+<h4>Los ejes articuladores</h4>
+<p>Transversales a todos los campos formativos, los <strong>siete ejes articuladores</strong> no son contenidos adicionales sino perspectivas pedagógicas que orientan la selección, el tratamiento y el sentido de los aprendizajes en todas las áreas y grados:</p>
+<ol>
+<li><strong>Inclusión.</strong> Garantiza el derecho a aprender de todas las personas, reconociendo su diversidad de capacidades, condiciones, lenguas, culturas e historias.</li>
+<li><strong>Pensamiento crítico.</strong> Promueve la capacidad de examinar, cuestionar y construir argumentos propios sobre la realidad.</li>
+<li><strong>Interculturalidad crítica.</strong> Implica reconocer el valor de los saberes de todos los pueblos —incluyendo los indígenas y afromexicanos— y cuestionar las relaciones de poder que históricamente los han subordinado.</li>
+<li><strong>Igualdad de género.</strong> Promueve relaciones justas entre personas de todos los géneros y trabaja por la eliminación de violencias y desigualdades.</li>
+<li><strong>Vida saludable.</strong> Comprende el bienestar físico, emocional y social como dimensiones inseparables. No se reduce a la salud física individual.</li>
+<li><strong>Apropiación de las culturas a través de la lectura y la escritura.</strong> Sitúa estas prácticas como actos culturales y sociales mediante los cuales las personas participan en la vida pública y construyen su identidad.</li>
+<li><strong>Artes y experiencias estéticas.</strong> Integra las expresiones artísticas como formas de conocimiento, comunicación y transformación de la realidad.</li>
+</ol>
+<h4>La comunidad como núcleo integrador</h4>
+<p>En el Plan de Estudio 2022, la comunidad no es el contexto externo donde se aplica lo aprendido en la escuela: es el punto de partida y de llegada del proceso educativo. La comunidad —sus saberes, sus problemas, sus actores, sus lenguas, sus prácticas— es la materia prima con la que el currículo se territorializa y adquiere sentido real.</p>
+</div></div>`,
+
+p2_m2:`<div class="lectura"><div class="lfuente">Documento para análisis · Muestra de Programa Analítico · Secundaria Técnica No. 47 · Ciclo 2023–2024 · Fase 6 · 2.° grado</div><div class="lnota">Usa las marcas acordadas: Verde (claro y bien construido) · Amarillo (genera duda o está poco desarrollado) · Rojo (inconsistente, ausente o problemático).</div><div class="lcuerpo">
+<h4>1. Datos generales</h4>
+<p>Escuela: Secundaria Técnica No. 47 "Benito Juárez". Localidad: Mérida, Yucatán. Grado: 2.° Grupo: B. Docentes responsables: Colectivo docente de 2.° B. Ciclo escolar: 2023–2024.</p>
+<h4>2. Diagnóstico socioeducativo</h4>
+<p>El grupo de 2.° B está conformado por 32 alumnos, de los cuales 18 son mujeres y 14 son hombres. La mayoría proviene de colonias cercanas a la escuela. Los alumnos tienen un nivel académico regular. Algunos presentan dificultades en lectura y matemáticas. Los padres de familia en general apoyan a sus hijos. La escuela cuenta con aula de medios y biblioteca.</p>
+<h4>3. Situación problema o eje de trabajo</h4>
+<p>Se trabajará el cuidado del medio ambiente y los valores cívicos, que son temas importantes en la formación de los alumnos de secundaria y están presentes en el programa.</p>
+<h4>4. Contenidos seleccionados del Programa Sintético</h4>
+<p>Del campo Saberes y pensamiento científico: ecosistemas, cadenas alimenticias, contaminación. Del campo Ética, naturaleza y sociedades: derechos y obligaciones ciudadanas, participación democrática. Del campo Lenguajes: comprensión lectora, producción de textos.</p>
+<h4>5. Ejes articuladores</h4>
+<p>Se trabajarán los ejes de: Pensamiento crítico, Vida saludable, Inclusión.</p>
+<h4>6. Secuencia de contenidos</h4>
+<p>Primer trimestre: ecosistemas y medio ambiente. Segundo trimestre: ciudadanía y derechos. Tercer trimestre: lectura y escritura de textos académicos.</p>
+<h4>7. Orientaciones didácticas</h4>
+<p>Se utilizarán diversas estrategias didácticas como exposiciones, trabajo en equipo, investigaciones y proyectos. Los alumnos participarán activamente en las actividades. Se fomentará el pensamiento crítico y la creatividad.</p>
+<h4>8. Evaluación</h4>
+<p>La evaluación será continua. Se tomarán en cuenta exámenes bimestrales, tareas, participación en clase y trabajos. La calificación final integrará todos estos elementos de acuerdo con los criterios establecidos por cada docente.</p>
+</div></div>`,
+
+p3_m2:`<div class="lectura"><div class="lfuente">Documento para análisis · Proyecto comunitario: "El agua en mi colonia" · 1.° grado, Fase 6</div><div class="lnota">Lee el proyecto e identifica en qué parte aparece cada uno de los once momentos. Usa las tarjetas o anota aquí tus hipótesis antes de consultar el referente oficial.</div><div class="lcuerpo">
+<h4>Presentación del proyecto</h4>
+<p>Los alumnos de 1.° A identificaron que en su colonia hay problema de agua: a veces no llega, o llega sucia. A partir de una conversación en clase, el grupo decidió investigar el tema.</p>
+<h4>¿Qué vamos a hacer?</h4>
+<p>El docente explicó a los alumnos los contenidos que se verían durante el trimestre: el ciclo del agua (Ciencias), textos expositivos (Español) y las responsabilidades de las autoridades (Formación Cívica). Se les dijo que irían relacionando estos temas con el problema del agua.</p>
+<h4>Primera etapa: investigamos</h4>
+<p>Los alumnos investigaron en internet y en sus libros sobre el ciclo del agua y la contaminación. Algunos preguntaron a sus familiares sobre el problema del agua en la colonia. Presentaron sus investigaciones en el salón. El docente fue orientando lo que faltaba en cada presentación.</p>
+<h4>Segunda etapa: hacemos algo</h4>
+<p>El grupo elaboró un periódico mural con la información más importante. También escribieron un texto expositivo sobre el tema. El docente revisó los textos y los devolvió con correcciones. Los alumnos los corrigieron y entregaron la versión final.</p>
+<h4>Cierre</h4>
+<p>Al final del trimestre, los alumnos presentaron el periódico mural en el pasillo de la escuela para que otros grupos lo vieran. Se hizo una reflexión final sobre lo aprendido. El docente aplicó un examen para evaluar los contenidos del trimestre.</p>
+<h4>Campos formativos trabajados</h4>
+<p>Lenguajes, Saberes y pensamiento científico, Ética, naturaleza y sociedades.</p>
+</div></div>`,
+
+p4_rubrica:`<div class="instrumento"><div class="ihdr iA">INSTRUMENTO A · Rúbrica para evaluar la exposición oral</div>
+<div class="imeta">Materia: ________ | Grado: ________ | Fecha: ________</div>
+<div class="iaviso">📋 Analiza este instrumento. ¿Qué evalúa realmente? ¿Cómo retroalimenta? ¿Cuándo y cómo se entrega al estudiante?</div>
+<div style="overflow-x:auto"><table class="itbl">
+<thead><tr><th>Criterio</th><th>Excelente (10)</th><th>Bien (8)</th><th>Regular (6)</th><th>Malo (4)</th></tr></thead>
+<tbody>
+<tr><td><strong>Presentación personal</strong></td><td>El alumno se presenta muy bien vestido y arreglado.</td><td>El alumno se presenta bien vestido.</td><td>El alumno se presenta regularmente arreglado.</td><td>El alumno no se presenta arreglado.</td></tr>
+<tr><td><strong>Habla bien</strong></td><td>Siempre habla bien y claro.</td><td>Casi siempre habla bien.</td><td>A veces habla bien.</td><td>No habla bien.</td></tr>
+<tr><td><strong>Sabe del tema</strong></td><td>El alumno sabe mucho del tema.</td><td>El alumno sabe algo del tema.</td><td>El alumno sabe poco del tema.</td><td>El alumno no sabe nada del tema.</td></tr>
+<tr><td><strong>Material de apoyo</strong></td><td>Su material es muy bonito y llamativo.</td><td>Su material es bonito.</td><td>Su material es regular.</td><td>No tiene material o está feo.</td></tr>
+<tr><td><strong>Comportamiento</strong></td><td>Tiene excelente comportamiento durante la exposición.</td><td>Tiene buen comportamiento.</td><td>Su comportamiento es regular.</td><td>Se porta mal durante la exposición.</td></tr>
+</tbody></table></div>
+<div class="ires"><strong>Calificación final:</strong> Sumar los puntos y dividir entre 5. Resultado: _____ / 10</div></div>`,
+
+p4_cotejo:`<div class="instrumento"><div class="ihdr iB">INSTRUMENTO B · Lista de revisión de trabajos escritos</div>
+<div class="imeta">Materia: ________ | Grado: ________ | Alumno/a: ________________________ | Fecha de entrega: ________</div>
+<div class="iaviso">📋 Analiza este instrumento. ¿Qué verifica realmente? ¿Dice algo sobre el aprendizaje del alumno? ¿Cómo retroalimenta?</div>
+<table class="itbl"><thead><tr><th>Elemento a revisar</th><th>Sí ✓</th><th>No ✗</th></tr></thead>
+<tbody>
+<tr><td>El alumno entregó el trabajo el día indicado</td><td></td><td></td></tr>
+<tr><td>El trabajo tiene portada con nombre completo, grado y fecha</td><td></td><td></td></tr>
+<tr><td>Está escrito en computadora con fuente Arial número 12</td><td></td><td></td></tr>
+<tr><td>El trabajo tiene mínimo 5 páginas de contenido</td><td></td><td></td></tr>
+<tr><td>Incluye imágenes, fotografías o ilustraciones</td><td></td><td></td></tr>
+<tr><td>Tiene bibliografía al final</td><td></td><td></td></tr>
+<tr><td>El trabajo está engargolado o impreso con grapa</td><td></td><td></td></tr>
+<tr><td>El trabajo está limpio, sin manchas ni tachaduras</td><td></td><td></td></tr>
+</tbody></table>
+<div class="ires"><strong>Resultado:</strong> 6–8 marcas Sí = Aprobado (8–10) &nbsp;|&nbsp; 4–5 marcas Sí = Suficiente (6–7) &nbsp;|&nbsp; Menos de 4 = Reprobado</div></div>`,
+
+p4_examen:`<div class="instrumento"><div class="ihdr iC">INSTRUMENTO C · Examen bimestral — Historia de México</div>
+<div class="imeta">Escuela: __________________ | Grado: 2.° | Bimestre: III | Alumno/a: ________________________ | Fecha: ________ | Calificación: _____</div>
+<div class="iaviso">📋 Analiza este instrumento. ¿Qué información ofrece sobre el aprendizaje? ¿Cuándo se aplica? ¿Cómo retroalimenta al alumno?</div>
+<div style="padding:14px 16px;font-size:14px;line-height:1.75">
+<p><strong>Sección A — Opción múltiple</strong> (2 puntos cada reactivo). Encierra la letra de la respuesta correcta.</p>
+<p><strong>1.</strong> El período conocido como Porfiriato se caracterizó principalmente por:<br>
+a) La redistribución agraria entre campesinos<br>b) El progreso económico concentrado en pocas manos y la represión política<br>c) La instauración de un gobierno democrático con elecciones libres<br>d) La separación definitiva de la Iglesia y el Estado</p>
+<p><strong>2.</strong> La Revolución Mexicana tuvo como uno de sus principales detonadores:<br>
+a) La promulgación de la Constitución de 1857<br>b) La invasión francesa al territorio nacional<br>c) El descontento popular ante la reelección de Porfirio Díaz<br>d) El triunfo del liberalismo sobre el conservadurismo</p>
+<p><strong>Sección B — Verdadero o Falso</strong> (1 punto cada reactivo). Escribe V o F.</p>
+<p>_____ 3. La Constitución de 1917 fue la primera en el mundo en incluir derechos sociales.<br>
+_____ 4. Emiliano Zapata operó principalmente en la región norte del país.<br>
+_____ 5. El Plan de Ayala exigía la restitución de tierras a los pueblos del sur.</p>
+<p><strong>Sección C — Complementación</strong> (2 puntos cada reactivo).</p>
+<p>6. El movimiento que pedía "Sufragio efectivo, no reelección" fue encabezado por ___________________.<br>
+7. La Constitución vigente en México fue promulgada en el año _____ en la ciudad de ___________________.</p>
+</div>
+<div class="ires"><strong>Total:</strong> _____ / 15 &nbsp;&nbsp; <strong>Calificación:</strong> _____</div></div>`,
+
+p4_registro:`<div class="instrumento"><div class="ihdr iD">INSTRUMENTO D · Registro anecdótico — Proceso de aprendizaje</div>
+<div class="imeta">Materia: Ciencias Sociales / Historia | Fase 6 — Secundaria | Grado: 3.° | Proyecto: Investigación documental sobre un problema sociohistórico local</div>
+<div class="imeta" style="background:var(--gLL);border-bottom:1px solid var(--bd)">Estudiante: Sofía R. (nombre anonimizado) | Docente: registro propio</div>
+<div class="iaviso">📋 Analiza este instrumento. ¿Qué información ofrece que ninguno de los otros tres podría ofrecer? ¿Cómo retroalimenta? ¿Quién aprende con él: solo el docente, o también el estudiante?</div>
+<div style="padding:16px 18px;font-size:16px;line-height:1.8">
+
+<div style="background:var(--gL);border-radius:6px;padding:12px 16px;margin-bottom:16px">
+<div style="font-size:14px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Lunes 4 de octubre</div>
+<div style="font-weight:700;color:var(--g);margin-bottom:5px">Observación docente:</div>
+<p>Durante la primera sesión de trabajo en equipo, Sofía tomó inmediatamente el rol de coordinadora sin que nadie se lo asignara. Distribuyó tareas con claridad y preguntó a cada integrante qué parte le resultaba más interesante antes de repartir. En la segunda mitad de la clase, sin embargo, comenzó a hacer la parte de Ana sin preguntarle primero. Cuando le señalé esto discretamente, lo reconoció y le devolvió la tarea, aunque con cierta incomodidad.</p>
+<div style="font-weight:700;color:var(--g);margin-bottom:5px">Autoevaluación del estudiante:</div>
+<p style="font-style:italic;background:var(--sf);border-left:4px solid var(--g);padding:9px 14px;border-radius:0 5px 5px 0">"Me siento bien trabajando en equipo, soy de las que organiza. Pero creo que a veces quiero que todo salga rápido y me adelanto a las demás. Voy a tratar de preguntar más antes de hacer."</p>
+</div>
+
+<div style="background:#EEF5F0;border-radius:6px;padding:12px 16px;margin-bottom:16px">
+<div style="font-size:14px;font-weight:700;color:var(--v);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Miércoles 13 de octubre</div>
+<div style="font-weight:700;color:var(--g);margin-bottom:5px">Observación docente:</div>
+<p>Al revisar el borrador del informe parcial, Sofía mostró comprensión sólida del marco histórico pero dificultad para articular la relación entre los datos estadísticos que encontró y las conclusiones que propuso. Sus conclusiones sonaban correctas pero no se desprendían de los datos sino de conocimientos previos. Se lo señalé con una pregunta: ¿Cómo sabes que ese dato apoya tu conclusión? No pudo responderse en el momento. Quedó como tarea revisarlo.</p>
+<div style="font-weight:700;color:var(--g);margin-bottom:5px">Autoevaluación del estudiante:</div>
+<p style="font-style:italic;background:var(--sf);border-left:4px solid var(--v);padding:9px 14px;border-radius:0 5px 5px 0">"No entendí bien por qué mi conclusión estaba mal si decía lo correcto. Creo que tendré que volver a leer los datos."</p>
+</div>
+
+<div style="background:var(--gL);border-radius:6px;padding:12px 16px;margin-bottom:16px">
+<div style="font-size:14px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Viernes 22 de octubre</div>
+<div style="font-weight:700;color:var(--g);margin-bottom:5px">Observación docente:</div>
+<p>Sofía entregó la segunda versión del informe con una nueva sección de análisis de datos mucho más articulada. Incluyó una gráfica que ella misma elaboró y la explicó con precisión en la sección de resultados. Sus conclusiones ahora sí se derivan explícitamente de los datos. Preguntó si podría incluir una entrevista a un familiar como fuente primaria y le respondí que sí, con la condición de documentarla.</p>
+<div style="font-weight:700;color:var(--g);margin-bottom:5px">Autoevaluación del estudiante:</div>
+<p style="font-style:italic;background:var(--sf);border-left:4px solid var(--g);padding:9px 14px;border-radius:0 5px 5px 0">"Ya entendí para qué sirven los datos. No es para decorar; es para decir 'esto me dice que...'. La gráfica me ayudó a verlo."</p>
+</div>
+
+<div style="background:#EEF5F0;border-radius:6px;padding:12px 16px">
+<div style="font-size:14px;font-weight:700;color:var(--v);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Jueves 4 de noviembre</div>
+<div style="font-weight:700;color:var(--g);margin-bottom:5px">Observación docente:</div>
+<p>Presentación final. Sofía expuso con seguridad, mantuvo contacto visual con el grupo y respondió dos preguntas de sus compañeros sin recurrir a sus notas. Cometió un error al afirmar una fecha que después ella misma corrigió. El resto del equipo la secundó bien. El proceso de tres meses se nota en la calidad del producto final.</p>
+<div style="font-weight:700;color:var(--g);margin-bottom:5px">Autoevaluación del estudiante:</div>
+<p style="font-style:italic;background:var(--sf);border-left:4px solid var(--v);padding:9px 14px;border-radius:0 5px 5px 0">"Me equivoqué en la fecha pero me di cuenta sola. Me gustó que el grupo me preguntó de verdad, no solo por salir del paso. Creo que aprendí más investigando que leyendo el libro."</p>
+</div>
+
+</div>
+<div class="ires"><em>Para el acompañante: ¿Qué información sobre el aprendizaje de Sofía ofrece este registro que ninguno de los otros tres instrumentos podría ofrecer? ¿Cómo retroalimenta? ¿Quién aprende con él: solo el docente, o también el estudiante?</em></div></div>`,
+
+p4_ref:`<div class="lectura"><div class="lfuente">SEP (2022) · Plan de Estudio · Apartado sobre evaluación formativa · Leer DESPUÉS de clasificar los instrumentos por cuenta propia.</div><div class="lnota">Contrasta lo que identificaste con lo que plantea el referente. ¿Qué ya habías identificado? ¿Qué te aportó el documento?</div><div class="lcuerpo">
+<p>La evaluación en la Nueva Escuela Mexicana es <strong>formativa</strong>: su propósito central no es asignar una calificación que clasifique a los estudiantes, sino <em>acompañar</em> el proceso de aprendizaje, identificar avances y dificultades, y ofrecer retroalimentación oportuna.</p>
+<p>Una evaluación es formativa cuando:</p>
+<ul>
+<li>Se aplica <strong>durante el proceso</strong> de aprendizaje, no solo al final.</li>
+<li>Genera <strong>retroalimentación</strong> específica, comprensible y utilizable para quien aprende.</li>
+<li>Incluye la <strong>voz del estudiante</strong>: la autoevaluación y la coevaluación forman parte del proceso.</li>
+<li>Informa las <strong>decisiones pedagógicas del docente</strong>: ajuste de estrategias, reorientación del grupo, atención diferenciada.</li>
+<li>Evalúa <strong>procesos y aprendizajes</strong>, no solo productos, presentación o conducta.</li>
+</ul>
+<p>La evaluación formativa se distingue de la <strong>calificación</strong> (que asigna un valor numérico) y de la <strong>acreditación</strong> (que certifica el cumplimiento de requisitos). Los instrumentos de evaluación son formativos <em>dependiendo de cómo se usen</em>, no por su formato. Una rúbrica entregada solo después de la actividad funciona como instrumento sumativo aunque tenga niveles. Un examen tradicional puede tener dimensiones formativas si el docente lo usa para identificar errores comunes y ajustar su enseñanza.</p>
+</div></div>`
+};
+
+// ── DATOS DE PROPUESTAS ──
+const PROPS=[
+{id:1,titulo:"Fundamentos de la NEM y arquitectura curricular del PE 2022",
+proposito:"Que la persona participante construya, mediante el diálogo horizontal y el contraste con su práctica, una comprensión propia de la arquitectura curricular del Plan de Estudio 2022 —cuatro campos formativos, siete ejes articuladores y la comunidad como núcleo integrador— y reconozca cómo esta arquitectura interpela su quehacer educativo cotidiano.",
+encuadre:"El Plan de Estudio 2022 articula su propuesta curricular a través de cuatro elementos centrales: integración curricular (campos y ejes), autonomía profesional del magisterio, comunidad como núcleo integrador y el derecho humano a la educación. Esta arquitectura no es una lista de contenidos sino una reorientación de qué se enseña, cómo se enseña y para qué. Comprenderla no se logra escuchándola, sino recorriéndola dialógicamente.",
+momentos:[
+{n:1,nombre:"Apertura dialógica",min:15,pregunta:"Si tuvieras que dibujar —no escribir— la Nueva Escuela Mexicana en una hoja, ¿qué dibujarías? ¿Qué te dice ese dibujo sobre lo que entiendes por NEM?",
+actividades:[{t:"Mi imagen de la NEM",time:"15 min",inst:`<p>Ambas personas reciben una hoja en blanco y <strong>dibujan durante 4 minutos</strong> la imagen que les viene a la mente al pensar en la NEM. Pueden ser palabras conectadas, símbolos, un esquema o una caricatura.</p><p>Al cumplirse los 4 minutos, <strong>intercambian las hojas</strong>. Cada persona dice: <em>"Lo que más me llama la atención de tu dibujo es…"</em></p><p>Después, <strong>dialogan 6 minutos</strong>: ¿Qué tienen en común? ¿Qué está ausente en ambos y debería estar?</p>`,
+inputs:[{k:"p1_m1_d",l:"Describe brevemente tu dibujo de la NEM:",ph:"Mi imagen incluye… La elegí porque…",r:5},{k:"p1_m1_o",l:"¿Qué notaste en el dibujo de la otra persona?",ph:"Lo que más me llamó la atención fue…",r:4},{k:"p1_m1_a",l:"¿Qué está ausente en ambos dibujos y debería estar?",ph:"Creo que ambos dejamos fuera…",r:3}]}],
+nota:"La persona acompañante también dibuja. Si solo dibuja la participante, la sesión empieza con una asimetría difícil de deshacer después.",tool:null},
+
+{n:2,nombre:"Encuentro con la fuente",min:25,pregunta:"Cuando un texto institucional dice algo que ya creemos saber, ¿qué pasa con nuestra atención? ¿Y cuando dice algo que nos confunde?",
+actividades:[{t:"Lectura marcada en común",time:"25 min",inst:`<p>Ambas personas leen el fragmento del PE 2022 que aparece a continuación. Acuerdan tres marcas:<br>• <strong>Subrayar</strong> lo que reconocen como ya familiar<br>• <strong>Encerrar en círculo</strong> lo que les genera duda<br>• <strong>Marcar con !</strong> lo que genera resistencia o incomodidad</p><p>Leen en silencio <strong>12 minutos</strong>. Al terminar, cada persona comparte sin debate una cosa de cada marca. Solo después, <strong>diálogo de 8 minutos</strong>.</p>`,
+lectura:"p1_m2",
+inputs:[{k:"p1_m2_sub",l:"Una idea que subrayé (ya familiar) y por qué:",ph:"Reconocí como familiar…",r:3},{k:"p1_m2_circ",l:"Una idea que encerré (me genera duda):",ph:"Todavía no comprendo…",r:3},{k:"p1_m2_adm",l:"Una idea que marqué con ! (resistencia o incomodidad):",ph:"Me genera resistencia…",r:3},{k:"p1_m2_ref",l:"¿Qué fue más fácil de marcar: lo familiar o lo confuso?",ph:"Me resultó más fácil marcar…",r:3}]}],
+nota:"Si el participante quiere 'la respuesta correcta', resiste la tentación. Di: 'Yo también marqué eso. ¿Qué hipótesis tienes tú?'",tool:null},
+
+{n:3,nombre:"Construcción colectiva",min:35,pregunta:"¿Los campos formativos y los ejes articuladores son la misma cosa con distinto nombre, o son dos categorías que se relacionan entre sí? ¿Cómo lo verificamos?",
+actividades:[
+{t:"Mapa de la arquitectura curricular",time:"20 min",inst:`<p>Sobre un pliego de papel bond, construyen un mapa visual colocando las tarjetas de los <strong>4 campos formativos</strong> y las <strong>7 tarjetas de ejes articuladores</strong> de manera que refleje cómo se relacionan. Si discrepan, la discrepancia coexiste en el mapa.</p><p>Campos: Lenguajes · Saberes y pensamiento científico · Ética, naturaleza y sociedades · De lo humano y lo comunitario<br>Ejes: Inclusión · Pensamiento crítico · Interculturalidad crítica · Igualdad de género · Vida saludable · Apropiación de culturas a través de la lectura y escritura · Artes y experiencias estéticas</p>`,
+inputs:[{k:"p1_m3_mapa",l:"¿Cómo organizaron el mapa? Describe la relación que propusieron entre campos y ejes:",ph:"Decidimos colocar los ejes… porque…",r:5},{k:"p1_m3_com",l:"¿Dónde colocaron 'la comunidad como núcleo integrador' y por qué?",ph:"La comunidad la ubicamos…",r:3}]},
+{t:"Anclaje en un caso real",time:"15 min",inst:"<p>La persona participante propone un caso concreto (un grupo, una escuela, una zona) que conozca y describe en <strong>tres oraciones</strong>. Sobre el mapa, marcan qué campos y ejes están más implicados y cómo aparecería la comunidad como núcleo integrador.</p>",
+inputs:[{k:"p1_m3_caso",l:"Describe el caso real (tres oraciones):",ph:"El caso que propongo es…",r:4},{k:"p1_m3_cam",l:"¿Qué campo(s) formativo(s) están más implicados?",ph:"Los campos más implicados son… porque…",r:3},{k:"p1_m3_eje",l:"¿Qué ejes articuladores orientarían una respuesta pedagógica?",ph:"Los ejes que resonaron con el caso son…",r:3}]}],
+nota:"",tool:{l:"Construir mapa colaborativo en Google Docs",url:"https://docs.new"}},
+
+{n:4,nombre:"Contraste con la práctica",min:25,pregunta:"¿Cuál de los siete ejes articuladores siento más cercano a mi forma habitual de trabajo y cuál más ajeno? ¿Qué me dice eso sobre mi formación pedagógica?",
+actividades:[{t:"Mi posición frente a los ejes",time:"25 min",inst:"<p>Cada persona coloca un punto sobre cada uno de los <strong>siete ejes articuladores</strong> indicando, de 0 a 10, qué tan presente está en su práctica cotidiana. Después comparten y conversan.</p>",
+scales:[{k:"p1_m4_s1",l:"Inclusión"},{k:"p1_m4_s2",l:"Pensamiento crítico"},{k:"p1_m4_s3",l:"Interculturalidad crítica"},{k:"p1_m4_s4",l:"Igualdad de género"},{k:"p1_m4_s5",l:"Vida saludable"},{k:"p1_m4_s6",l:"Apropiación de culturas a través de lectura y escritura"},{k:"p1_m4_s7",l:"Artes y experiencias estéticas"}],
+inputs:[{k:"p1_m4_alto",l:"El eje más presente en mi práctica y por qué:",ph:"El eje que más está presente es…",r:3},{k:"p1_m4_bajo",l:"El eje más ajeno y qué lo explica:",ph:"El eje que menos está presente es… lo explica…",r:3}]}],
+nota:"Si la persona acompañante comparte primero —con honestidad, incluyendo sus propias bajas calificaciones— habilita que la otra también lo haga.",tool:null},
+
+{n:5,nombre:"Cierre metacognitivo",min:20,pregunta:"Si una persona que no estuvo en esta sesión me pidiera explicar en una oración qué entiendo ahora por arquitectura curricular del PE 2022, ¿qué le diría?",
+actividades:[{t:"Bitácora final y compromiso",time:"20 min",inst:"<p>Cada persona escribe durante <strong>10 minutos</strong> respondiendo las preguntas de metacognición. Al finalizar, comparten en voz alta <strong>solo el compromiso concreto</strong> y lo escriben en el mapa colaborativo.</p>",inputs:[]}],
+meta:{inst:"Elige al menos 4 de las siguientes preguntas y respóndelas.",
+preguntas:[
+{n:1,q:"¿Qué sabía sobre la arquitectura curricular del PE 2022 antes de esta sesión y qué sé ahora? ¿En qué noté el cambio?",k:"p1_q1"},
+{n:2,q:"¿Qué actividad de la sesión me ayudó más a comprender y cuál me resultó más difícil? ¿Por qué?",k:"p1_q2"},
+{n:3,q:"¿En qué momentos sentí que estaba realmente dialogando y en cuáles me costó salir de un rol pasivo?",k:"p1_q3"},
+{n:4,q:"¿Qué eje articulador entiendo mejor después de esta sesión? ¿Cuál sigue siendo confuso?",k:"p1_q4"},
+{n:5,q:"¿Qué decisión de mi práctica revisaré a partir de lo conversado hoy?",k:"p1_q5"},
+{n:6,q:"¿Qué resistencia interior identifiqué frente a algún aspecto de la NEM y de dónde creo que viene?",k:"p1_q6"}],
+rubrica:[
+{c:"Comprensión de la arquitectura",o:"Articula con sus propias palabras cómo se relacionan campos, ejes y comunidad, con ejemplos de su práctica.",s:"Identifica los componentes y los nombra, aunque las relaciones aún no están plenamente elaboradas.",p:"Reconoce los componentes pero los presenta como lista, sin relaciones claras."},
+{c:"Apropiación crítica del PE 2022",o:"Identifica tensiones, ausencias o resistencias propias frente al documento y las trabaja con honestidad.",s:"Identifica aspectos que le generan duda, aunque no los profundiza.",p:"Acepta el contenido del documento sin contrastarlo con su experiencia."},
+{c:"Diálogo horizontal",o:"Habla y escucha en proporciones equivalentes; aporta sin dominar y consulta sin depender.",s:"Participa activamente pero cae ocasionalmente en posición de oyente o protagonista.",p:"Tiende a esperar respuestas o no comparte hipótesis propias."},
+{c:"Vinculación con la práctica",o:"Construye al menos un compromiso concreto, contextualizado, con plazo y criterio de seguimiento.",s:"Formula un compromiso pero queda en lo general o sin plazo definido.",p:"No logra concretar un compromiso o lo formula como intención abstracta."},
+{c:"Reflexión metacognitiva",o:"Identifica qué cambió en su comprensión, qué estrategia le funcionó y qué pregunta le queda abierta.",s:"Identifica algún cambio en su comprensión, aunque sin profundizar.",p:"No reconoce cambios en su comprensión durante la sesión."}],
+comp:{k:"p1_comp",l:"Mi compromiso concreto (una acción · un plazo · un criterio de seguimiento):"}},
+nota:"",tool:null}]},
+
+// PROPUESTA 2
+{id:2,titulo:"El Programa Analítico: estructura, sentido y construcción colegiada",
+proposito:"Que la persona participante construya, mediante el análisis de un PA real y la elaboración colaborativa de criterios propios, una comprensión crítica de la estructura y el sentido del Programa Analítico en la NEM, y desarrolle criterios para identificar cuándo un PA es una herramienta pedagógica viva y cuándo es solo un requisito formal.",
+encuadre:"El Programa Analítico es la traducción del Programa Sintético al contexto concreto de cada escuela: el instrumento donde el colectivo docente decide qué enseñar, cómo y para qué, articulando contenidos nacionales con saberes de la comunidad. En la práctica, el PA suele aparecer como un trámite burocrático o una reproducción ligeramente modificada del PS. Esta propuesta no busca explicar qué es un buen PA; busca que la persona participante lo descubra desde el análisis crítico de uno real.",
+momentos:[
+{n:1,nombre:"Apertura dialógica",min:15,pregunta:"Cuéntame de la última vez que estuviste frente a un Programa Analítico. ¿Qué notaste? ¿Qué sentiste? ¿Qué pensaste pero no dijiste?",
+actividades:[{t:"Tres palabras y una emoción",time:"15 min",inst:"<p>Cada persona escribe: <strong>tres palabras</strong> que asocie con 'Programa Analítico' y <strong>una emoción</strong> que le produzca pensar en su elaboración. Al cumplirse 4 minutos, leen lo de la otra y <strong>conversan 9 minutos</strong>.</p>",
+inputs:[{k:"p2_m1_pal",l:"Mis tres palabras asociadas al Programa Analítico:",ph:"1.   2.   3.",r:2},{k:"p2_m1_em",l:"La emoción que me produce pensar en su elaboración:",ph:"La emoción que registro es… y viene de…",r:3},{k:"p2_m1_com",l:"¿Qué tienen en común sus palabras? ¿Qué se contradice?",ph:"Hay coincidencia en…  Pero se contradice en…",r:3}]}],
+nota:"Es muy probable que aparezcan emociones negativas: frustración, fatiga, confusión. No las desactives ni las consueles. Acéptalas como dato del contexto.",tool:null},
+
+{n:2,nombre:"Análisis de un PA real",min:35,pregunta:"Antes de saber qué dice la SEP que debe tener un PA, ¿qué nos dice nuestra propia mirada al leer uno real? ¿Qué reconocemos como bien construido y qué nos genera dudas?",
+actividades:[
+{t:"Lectura con código de colores",time:"22 min",inst:"<p>Ambas personas leen la muestra de PA que aparece a continuación. Acuerdan tres marcas:<br>• <strong>Verde:</strong> lo que parece claro, bien construido y coherente<br>• <strong>Amarillo:</strong> lo que genera dudas o parece poco desarrollado<br>• <strong>Rojo:</strong> lo que parece inconsistente, ausente o problemático<br>Leen en silencio <strong>18 minutos</strong> sin ver las marcas de la otra persona.</p>",
+lectura:"p2_m2",
+inputs:[{k:"p2_m2_v",l:"Una marca VERDE (bien construido y por qué):",ph:"Lo que me parece claro es… porque…",r:3},{k:"p2_m2_a",l:"Una marca AMARILLA (genera duda):",ph:"Lo que no termino de comprender es…",r:3},{k:"p2_m2_r",l:"Una marca ROJA (inconsistencia o ausencia):",ph:"Lo que parece inconsistente o ausente es…",r:3}]},
+{t:"Contraste de hallazgos",time:"13 min",inst:"<p>Cada persona comparte sus tres marcas <strong>sin debate inmediato</strong>. Solo después, <strong>diálogo de 9 minutos</strong>: ¿Coincidimos? ¿Diferimos? ¿Por qué?</p>",
+inputs:[{k:"p2_m2_dial",l:"¿En qué coincidieron y en qué difirieron en sus marcas?",ph:"Coincidimos en… Diferimos en… porque…",r:4}]}],
+nota:"",tool:null},
+
+{n:3,nombre:"Construcción de la lista de cotejo",min:30,pregunta:"Si tuviéramos que decirle a un colectivo docente 'esto es lo que un buen Programa Analítico debe tener', ¿qué diríamos a partir de lo que acabamos de leer?",
+actividades:[{t:"Mi lista de cotejo, nuestra lista de cotejo",time:"30 min",inst:"<p>Cada persona escribe su propia lista de cotejo durante <strong>6 minutos</strong> (mínimo 5 criterios, máximo 10). Después, construyen una lista común y la contrastan con el referente oficial durante <strong>12 minutos</strong>.</p>",
+inputs:[{k:"p2_m3_lp",l:"Mi lista de cotejo personal (mínimo 5 criterios):",ph:"1.\n2.\n3.\n4.\n5.",r:8},{k:"p2_m3_lc",l:"Lista común construida colaborativamente:",ph:"1.\n2.\n3.",r:8},{k:"p2_m3_ct",l:"¿Qué tiene su lista que el referente no menciona? ¿Qué dijo el referente que no formularon?",ph:"Nuestra lista incluye… El referente menciona que faltó…",r:4}]}],
+nota:"Existe la tentación de adelantar el referente oficial para 'orientar' la lista. Resístela. La fuerza está en que nazca primero del análisis propio.",
+tool:{l:"Construir lista de cotejo compartida en Google Docs",url:"https://docs.new"}},
+
+{n:4,nombre:"Aplicación al propio contexto",min:25,pregunta:"¿Qué pasaría si aplicaras esta lista de cotejo al PA que conoces de tu escuela o tu zona? ¿Qué encontrarías?",
+actividades:[
+{t:"Mi PA bajo la lupa",time:"15 min",inst:"<p>La persona participante recuerda un PA que conoce y lo describe brevemente (3 min). Luego, conversan <strong>12 minutos</strong> aplicando la lista de cotejo: ¿Qué criterios cumple bien? ¿Cuáles solo formalmente? ¿Cuáles están ausentes?</p>",
+inputs:[{k:"p2_m4_d",l:"Describe brevemente el PA que tienes en mente:",ph:"El PA que recuerdo es de…",r:3},{k:"p2_m4_c",l:"¿Cuáles criterios de la lista parece cumplir bien?",ph:"Cumple bien los criterios de…",r:3},{k:"p2_m4_f",l:"¿Cuáles están formalmente presentes pero vacíos de contenido pedagógico?",ph:"Están formalmente presentes pero vacíos…",r:3},{k:"p2_m4_a",l:"¿Cuáles están claramente ausentes?",ph:"Están claramente ausentes…",r:3}]},
+{t:"Foco de mejora concreto",time:"10 min",inst:`<p>La persona participante elige <strong>un solo aspecto</strong> del PA para trabajar como foco de mejora y lo formula con esta estructura:<br><em>"En el PA de [referencia], el aspecto que más necesita fortalecerse es [aspecto], y mi primera acción para incidir en ello será [acción verificable]."</em></p>`,
+inputs:[{k:"p2_m4_fo",l:"Mi foco de mejora concreto:",ph:"En el PA de… el aspecto que más necesita fortalecerse es… y mi primera acción será…",r:4}]}],
+nota:"",tool:null},
+
+{n:5,nombre:"Cierre metacognitivo",min:15,pregunta:"¿Qué noción de Programa Analítico tenía al iniciar la sesión y qué noción tengo ahora? ¿Qué actividad fue la que más me ayudó a hacer ese tránsito?",
+actividades:[{t:"Bitácora de cierre",time:"15 min",inst:"<p>Cada persona escribe durante <strong>10 minutos</strong> respondiendo las preguntas de metacognición. Al finalizar, comparten en voz alta <strong>solo el compromiso concreto</strong>.</p>",inputs:[]}],
+meta:{inst:"Elige al menos 4 de las siguientes preguntas y respóndelas.",
+preguntas:[
+{n:1,q:"¿Qué supuesto sobre el PA tenía antes y cuál se modificó al examinar uno real?",k:"p2_q1"},
+{n:2,q:"¿Qué fue más fácil: identificar lo que estaba bien o lo que estaba ausente? ¿Qué dice eso de cómo me he relacionado con el PA?",k:"p2_q2"},
+{n:3,q:"¿Qué criterio incluí en mi lista personal que no aparece en el referente oficial? ¿Por qué lo incluí?",k:"p2_q3"},
+{n:4,q:"¿En qué momento sentí que estaba realmente dialogando y en cuál me costó salir del rol pasivo?",k:"p2_q4"},
+{n:5,q:"¿Qué ajuste concreto haré al acompañar (o elaborar) un PA a partir de hoy?",k:"p2_q5"},
+{n:6,q:"¿Qué dimensión del PA —diagnóstico, contextualización, secuenciación, evaluación— me queda como tema pendiente?",k:"p2_q6"}],
+rubrica:[
+{c:"Lectura crítica del PA",o:"Identifica fortalezas, dudas y debilidades concretas con argumentos pedagógicos.",s:"Identifica fortalezas y debilidades, aunque algunas argumentaciones quedan en lo descriptivo.",p:"Marca el documento de manera intuitiva, sin fundamentar."},
+{c:"Construcción de criterios propios",o:"Aporta criterios sustantivos, los formula con precisión y dialoga sobre su pertinencia.",s:"Aporta criterios pertinentes pero algunos quedan formulados de manera ambigua.",p:"Sus aportes son escasos o repiten lo que la otra persona ya formuló."},
+{c:"Vinculación con la práctica",o:"Aplica la lista a un PA real con honestidad y formula un foco de mejora contextualizado y verificable.",s:"Aplica la lista pero el foco queda en lo general o sin plazo.",p:"No logra aplicar la lista o el foco es una intención abstracta."},
+{c:"Diálogo horizontal",o:"Habla y escucha en proporciones equivalentes; aporta hipótesis sin imponerlas.",s:"Participa activamente pero cae ocasionalmente en posición pasiva o de protagonismo.",p:"Espera respuestas o domina la conversación sin escuchar."},
+{c:"Reflexión metacognitiva",o:"Identifica con precisión qué noción del PA cambió, qué actividad la modificó y qué pregunta queda abierta.",s:"Identifica algún cambio, aunque sin profundizar en cómo se produjo.",p:"No reconoce cambios en su comprensión."}],
+comp:{k:"p2_comp",l:"Mi compromiso concreto (una acción · un plazo · un criterio de seguimiento):"}},
+nota:"",tool:null}]},
+
+// PROPUESTA 3
+{id:3,titulo:"Planeación didáctica interdisciplinaria: el proyecto comunitario",
+proposito:"Que la persona participante construya, mediante el análisis de un proyecto didáctico real y la elaboración colaborativa de un esbozo propio, una comprensión práctica de la estructura del proyecto comunitario en la NEM y desarrolle criterios para distinguir una planeación genuinamente interdisciplinaria de una secuencia tradicional disfrazada.",
+encuadre:"El proyecto comunitario en la NEM no es una variante del aprendizaje basado en proyectos tradicional. Se organiza en tres fases (Planeación, Acción e Intervención) y once momentos, y tiene como punto de partida una situación real de la comunidad —no un contenido del programa. En la práctica, la planeación por proyectos suele reproducir la lógica de las asignaturas con otro formato. Esta propuesta busca que la persona participante identifique esa diferencia desde adentro.",
+momentos:[
+{n:1,nombre:"Apertura dialógica",min:15,pregunta:"Cuéntame de un proyecto educativo que te haya marcado, propio o ajeno, como estudiante o como docente. ¿Qué lo hizo significativo? ¿Qué pasó allí que no pasaba en una clase ordinaria?",
+actividades:[{t:"El proyecto que recuerdo",time:"15 min",inst:"<p>Cada persona escribe durante <strong>4 minutos</strong>: un proyecto educativo que le haya marcado, qué situación lo origina, qué hicieron durante él y qué lo hizo significativo. Después, cada persona comparte <strong>3 minutos</strong>. La otra escucha sin interrumpir. Al concluir, <strong>diálogo de 5 minutos</strong>.</p>",
+inputs:[{k:"p3_m1_proy",l:"El proyecto que me marcó (3-4 oraciones):",ph:"El proyecto que recuerdo es… Lo que lo hizo significativo fue…",r:5},{k:"p3_m1_dif",l:"¿Qué tuvo ese proyecto que no tiene una clase ordinaria?",ph:"Lo que ese proyecto tuvo y una clase ordinaria no tiene es…",r:3},{k:"p3_m1_com",l:"¿Qué papel tuvo la comunidad en ese proyecto?",ph:"La comunidad participó / estuvo presente en…",r:3}]}],
+nota:"Los proyectos significativos casi siempre tienen tres rasgos: parten de una pregunta real, articulan saberes de varias fuentes y conectan con la comunidad. Si emergen en el diálogo, no hace falta nombrarlos.",tool:null},
+
+{n:2,nombre:"Análisis de un proyecto real",min:30,pregunta:"Antes de leer cómo dice la SEP que se organiza un proyecto comunitario, ¿podemos identificar nosotros mismos sus fases y momentos en un proyecto ya elaborado?",
+actividades:[
+{t:"Las piezas del proyecto",time:"18 min",inst:"<p>Ambas personas leen la muestra de proyecto que aparece a continuación e intentan identificar en el texto cada uno de los <strong>once momentos</strong> distribuidos en las <strong>tres fases</strong>.<br><strong>Fases:</strong> Planeación · Acción · Intervención<br><strong>Once momentos:</strong> Identificación · Recuperación · Planificación · Acercamiento · Comprensión y producción · Reconocimiento · Concreción · Integración · Difusión · Consideraciones · Avances</p>",
+lectura:"p3_m2",
+inputs:[{k:"p3_m2_id",l:"¿Qué momentos identificaron claramente? ¿Cuáles les generaron duda?",ph:"Identificamos claramente… Nos generaron duda…",r:5},{k:"p3_m2_dc",l:"¿En qué coincidieron y en qué difirieron en su lectura?",ph:"Coincidimos en… Diferimos en… porque…",r:3}]},
+{t:"Contraste con el referente",time:"12 min",inst:"<p>Leen brevemente el referente oficial sobre las tres fases y once momentos (5 min). Luego, <strong>7 minutos</strong> de conversación: ¿Qué momentos identificaron correctamente? ¿Cuáles diferencias son sustantivas y cuáles solo de etiqueta?</p>",
+inputs:[{k:"p3_m2_ct",l:"¿Qué diferencias entre su hipótesis y el referente son sustantivas y cuáles solo de nombre?",ph:"Las diferencias sustantivas son… Las diferencias solo de nombre son…",r:3}]}],
+nota:"",tool:null},
+
+{n:3,nombre:"Construcción del esbozo",min:40,pregunta:"Si tomamos una situación real de tu contexto, una que importe a la comunidad, ¿podríamos esbozar juntos un proyecto comunitario que no sea solo formato?",
+actividades:[
+{t:"Identificación de la situación",time:"5 min",inst:"<p>La persona participante propone una situación real de su contexto en <strong>tres oraciones</strong>. Acuerdan grado escolar y fase donde se desarrollaría.</p>",
+inputs:[{k:"p3_m3_sit",l:"Situación real que da origen al proyecto:",ph:"La situación que propongo es… Importa a la comunidad porque… El grado/fase sería…",r:4}]},
+{t:"Esbozo por fases",time:"30 min",inst:"<p>Construyen el esbozo llenando <strong>una oración por momento</strong>. Es preferible un esbozo incompleto pero genuino que uno completo pero formulario.</p>",
+inputs:[
+{k:"p3_m3_f1i",l:"FASE 1 PLANEACIÓN · Identificación (situación que origina el proyecto):",ph:"La situación que da origen al proyecto es…",r:2},
+{k:"p3_m3_f1r",l:"Recuperación (saberes previos del grupo y la comunidad):",ph:"Los saberes previos que se reconocen son…",r:2},
+{k:"p3_m3_f1p",l:"Planificación (campos formativos y ejes articuladores):",ph:"Los campos que se articulan son… Los ejes que los atraviesan son…",r:2},
+{k:"p3_m3_f2a",l:"FASE 2 ACCIÓN · Acercamiento (primer contacto con la situación):",ph:"El primer contacto será…",r:2},
+{k:"p3_m3_f2c",l:"Comprensión y producción (procesos y productos parciales):",ph:"Los procesos de comprensión y productos parciales serán…",r:2},
+{k:"p3_m3_f2r",l:"Reconocimiento (cómo se reconocen los aprendizajes en proceso):",ph:"El aprendizaje se reconoce mediante…",r:2},
+{k:"p3_m3_f2co",l:"Concreción (producto principal de la Fase 2):",ph:"El producto principal de esta fase es…",r:2},
+{k:"p3_m3_f3i",l:"FASE 3 INTERVENCIÓN · Integración (cómo se integra el aprendizaje al colectivo):",ph:"El aprendizaje se integra mediante…",r:2},
+{k:"p3_m3_f3d",l:"Difusión (cómo se comparte el resultado con la comunidad):",ph:"El resultado se comparte con la comunidad a través de…",r:2},
+{k:"p3_m3_f3c",l:"Consideraciones (qué se observa y ajusta):",ph:"Lo que se observa y ajusta es…",r:2},
+{k:"p3_m3_f3a",l:"Avances (nuevas preguntas o proyectos que emergen):",ph:"Las nuevas preguntas que emergen son…",r:2}]}],
+nota:"Si el esbozo empieza a sonar a una secuencia tradicional disfrazada, pregunta: '¿En qué se nota aquí que estamos haciendo un proyecto comunitario y no una unidad de asignaturas?'",
+tool:{l:"Plantilla de tres fases en Google Docs",url:"https://docs.new"}},
+
+{n:4,nombre:"Aplicación reflexiva",min:20,pregunta:"¿Qué dificultades aparecieron al construir el esbozo? ¿Qué lógica tradicional de planeación se asomó sin que la invitáramos?",
+actividades:[{t:"Lectura del propio esbozo",time:"20 min",inst:"<p>Ambas personas releen el esbozo y <strong>conversan 15 minutos</strong>: ¿En qué momentos se asomó la lógica tradicional? ¿Qué saberes de la comunidad emergieron? ¿Qué convertiría este esbozo en un proyecto realmente realizable?</p>",
+inputs:[{k:"p3_m4_log",l:"¿En qué momentos se asomó la lógica tradicional? ¿Cómo lo notaron?",ph:"La lógica tradicional apareció cuando… Lo notamos porque…",r:3},{k:"p3_m4_sab",l:"¿Qué saberes de la comunidad emergieron? ¿Cuáles costó más integrar?",ph:"Emergieron saberes como… Costó más integrar…",r:3},{k:"p3_m4_rea",l:"¿Qué convertiría a este esbozo en un proyecto realmente realizable?",ph:"Para que sea realizable necesitaría…",r:3}]}],
+nota:"",tool:null},
+
+{n:5,nombre:"Cierre metacognitivo",min:15,pregunta:"¿Qué entendía por planeación didáctica antes de esta sesión y qué entiendo ahora? ¿Qué cambia en mi forma de acompañar planeaciones desde mañana?",
+actividades:[{t:"Bitácora final y compromiso",time:"15 min",inst:"<p>Cada persona escribe durante <strong>10 minutos</strong> respondiendo las preguntas. Al cierre, comparten <strong>solo el compromiso</strong> y lo escriben al pie del esbozo.</p>",inputs:[]}],
+meta:{inst:"Elige al menos 4 de las siguientes preguntas y respóndelas.",
+preguntas:[
+{n:1,q:"¿Qué supuesto sobre la planeación didáctica tenía antes y cuál se modificó al construir un esbozo real?",k:"p3_q1"},
+{n:2,q:"¿Qué tan natural o forzada me resultó identificar los once momentos en el proyecto modelo? ¿Por qué?",k:"p3_q2"},
+{n:3,q:"¿Qué momento del proyecto comunitario fue el más difícil de imaginar para la situación que propuse?",k:"p3_q3"},
+{n:4,q:"¿En qué punto del esbozo se asomó la lógica tradicional de planeación? ¿Cómo lo noté?",k:"p3_q4"},
+{n:5,q:"¿Qué saberes de la comunidad emergieron en el esbozo y cuáles me cuesta integrar habitualmente?",k:"p3_q5"},
+{n:6,q:"¿Qué prácticas de planeación o acompañamiento revisaré a partir de esta sesión?",k:"p3_q6"}],
+rubrica:[
+{c:"Identificación de fases y momentos",o:"Identifica con precisión las tres fases y once momentos en el proyecto modelo, fundamentando cada decisión.",s:"Identifica las fases y la mayoría de los momentos, aunque algunos quedan ambiguos.",p:"Confunde momentos o no justifica la asignación realizada."},
+{c:"Construcción del esbozo",o:"Elabora un esbozo coherente en las tres fases, articulando al menos dos campos formativos y saberes comunitarios.",s:"Elabora un esbozo razonable pero alguna fase queda débilmente desarrollada.",p:"El esbozo queda incompleto o reproduce la lógica de una secuencia tradicional."},
+{c:"Articulación interdisciplinaria",o:"Articula dos o más campos formativos de manera orgánica, no yuxtapuesta, con justificación pedagógica.",s:"Articula dos campos pero la articulación queda en la enunciación.",p:"Trabaja un solo campo o yuxtapone sin articulación real."},
+{c:"Vinculación con la comunidad",o:"Integra saberes, actores o lugares de la comunidad como parte del proyecto, no como ilustración.",s:"Menciona la comunidad pero su papel queda en lo declarativo.",p:"El proyecto se sostiene en el aula sin vinculación efectiva."},
+{c:"Diálogo horizontal",o:"Habla y escucha en proporciones equivalentes, aporta hipótesis y consulta sin depender.",s:"Participa activamente pero cae ocasionalmente en posición pasiva.",p:"Reproduce el patrón expositor–oyente o domina sin escuchar."}],
+comp:{k:"p3_comp",l:"Mi compromiso concreto (una acción · un plazo · un criterio de seguimiento):"}},
+nota:"",tool:null}]},
+
+// PROPUESTA 4
+{id:4,titulo:"Evaluación formativa: criterios, instrumentos y rúbricas",
+proposito:"Que la persona participante construya, mediante el contraste dialógico de instrumentos de evaluación reales y la elaboración colaborativa de una rúbrica propia, una comprensión crítica de la evaluación formativa en la NEM y desarrolle criterios para distinguir cuándo sus propias prácticas evaluativas acompañan el aprendizaje y cuándo solo lo miden.",
+encuadre:"La evaluación es uno de los aspectos más sensibles de la práctica docente. Lo que se evalúa configura lo que se enseña; cómo se evalúa configura cómo aprenden los estudiantes a aprender. La NEM propone una evaluación formativa: una evaluación que acompaña en lugar de solo medir al final, que retroalimenta antes que califica, y que incluye la voz de quien aprende. En la práctica, la evaluación formativa suele aparecer como un discurso superpuesto a prácticas tradicionales que no cambian.",
+momentos:[
+{n:1,nombre:"Apertura biográfica",min:15,pregunta:"Cuéntame una experiencia tuya, como estudiante o como docente, donde la evaluación te ayudó a aprender. Y otra donde no te ayudó, donde solo te midió o, peor, te lastimó. ¿Qué hizo la diferencia?",
+actividades:[{t:"Dos historias de evaluación",time:"15 min",inst:"<p>Cada persona escribe durante <strong>5 minutos</strong>: (1) Una experiencia donde la evaluación me ayudó a aprender. ¿Qué pasó? ¿Cómo se retroalimentó? (2) Una experiencia donde no me ayudó o me lastimó. Comparten en voz alta; la otra escucha sin interrumpir. Luego, <strong>diálogo de 5 minutos</strong>.</p>",
+inputs:[{k:"p4_m1_pos",l:"Una experiencia donde la evaluación me ayudó a aprender:",ph:"La situación fue… Lo que hizo que me ayudara fue…",r:5},{k:"p4_m1_neg",l:"Una experiencia donde no me ayudó, o me lastimó:",ph:"La situación fue… Lo que no funcionó fue…",r:5},{k:"p4_m1_dif",l:"¿Qué hace que una evaluación ayude a aprender y otra no?",ph:"La diferencia entre una y otra fue…",r:3}]}],
+nota:"Si emergen experiencias dolorosas, escúchalas con respeto. Las prácticas evaluativas que construimos están profundamente moldeadas por las que recibimos como estudiantes.",tool:null},
+
+{n:2,nombre:"Encuentro con instrumentos",min:30,pregunta:"Si tuviéramos cuatro instrumentos de evaluación distintos sobre la mesa, ¿podríamos identificar cuál es formativo y cuál no, sin haber leído antes una definición técnica?",
+actividades:[
+{t:"Clasificar antes de definir",time:"18 min",inst:"<p>Lee los cuatro instrumentos que aparecen a continuación. Para cada uno, escribe en tu bitácora: ¿qué evalúa? ¿cómo retroalimenta? ¿en qué momento es útil aplicarse? ¿parece formativo o sumativo?</p>",
+instrumentos:["p4_rubrica","p4_cotejo","p4_examen","p4_registro"],
+inputs:[{k:"p4_m2_an",l:"Análisis de los 4 instrumentos:",ph:"Instrumento A (Rúbrica): evalúa… retroalimenta… parece formativo porque…\nInstrumento B (Cotejo): evalúa… retroalimenta… parece…\nInstrumento C (Examen): evalúa… retroalimenta… parece…\nInstrumento D (Registro): evalúa… retroalimenta… parece…",r:12}]},
+{t:"Contraste con el PE 2022",time:"12 min",inst:"<p>Comparten sus clasificaciones. Si discrepan, anotan la discrepancia. Solo después, leen el fragmento del Plan de Estudio 2022 sobre evaluación formativa que aparece a continuación (7 min). Conversan: ¿Qué ya habían identificado? ¿Qué les aportó el referente?</p>",
+lectura:"p4_ref",
+inputs:[{k:"p4_m2_ct",l:"¿Qué ya habías identificado? ¿Qué te aportó el referente?",ph:"Yo ya había identificado… El referente me aportó que…",r:4}]}],
+nota:"Los referentes del PE 2022 se leen DESPUÉS de clasificar los instrumentos por cuenta propia. El referente contrasta; no anticipa.",tool:null},
+
+{n:3,nombre:"Construcción colaborativa de rúbrica",min:40,pregunta:"Si tomamos una situación real de aprendizaje, ¿podríamos diseñar juntos una rúbrica que sea verdaderamente formativa, no solo una escala numérica disfrazada?",
+actividades:[
+{t:"Diseño de la rúbrica",time:"30 min",inst:"<p>La persona participante propone una situación real (exposición, texto, proyecto) en <strong>tres oraciones</strong>. Acuerdan grado y para qué se evaluará. Sobre papel bond, trabajan <strong>una decisión a la vez</strong>:<br>1. Criterios (3-5, con verbo observable) · 2. Niveles (cantidad y nombres) · 3. Descriptores (un enunciado observable por cruce) · 4. Retroalimentación (¿cómo se devuelve?) · 5. Uso (¿cuándo? ¿quiénes?)</p>",
+inputs:[{k:"p4_m3_sit",l:"Situación de aprendizaje elegida:",ph:"La situación que propongo es…",r:3},{k:"p4_m3_crit",l:"Criterios de evaluación (con verbo observable):",ph:"1. El estudiante identifica…\n2. El estudiante argumenta…\n3. El estudiante contrasta…",r:5},{k:"p4_m3_niv",l:"Niveles y sus nombres:",ph:"Nivel 1: …  Nivel 2: …  Nivel 3: …",r:2},{k:"p4_m3_desc",l:"Descriptores (al menos un ejemplo):",ph:"Criterio 1, Nivel 3: …\nCriterio 1, Nivel 2: …",r:5},{k:"p4_m3_uso",l:"¿Cómo se devuelve la retroalimentación? ¿Cuándo y quiénes aplican la rúbrica?",ph:"La retroalimentación se devuelve… Se aplica… La aplican…",r:3}]},
+{t:"Lectura crítica de lo construido",time:"10 min",inst:"<p>Leen la rúbrica completa y se preguntan: ¿Cualquier persona sabría qué se le pide? ¿Los descriptores son observables o usan palabras vagas ('adecuadamente', 'bien')? ¿Permite saber cómo pasar de un nivel al siguiente? ¿Mide aprendizaje o solo entrega de productos?</p>",
+inputs:[{k:"p4_m3_aj",l:"¿Qué ajustes haría a la rúbrica después de la lectura crítica?",ph:"Después de releer críticamente, ajustaría…",r:3}]}],
+nota:"Las rúbricas mal diseñadas se reconocen por descriptores que solo cambian un adverbio entre niveles y criterios que evalúan presentación más que aprendizaje.",
+tool:{l:"Plantilla de rúbrica en Google Docs",url:"https://docs.new"}},
+
+{n:4,nombre:"Aplicación al propio contexto",min:20,pregunta:"¿Cuáles de mis prácticas evaluativas actuales son genuinamente formativas y cuáles son sumativas disfrazadas? ¿En qué me doy cuenta?",
+actividades:[{t:"Mi mapa de prácticas evaluativas",time:"20 min",inst:"<p>Cada persona dibuja dos columnas: <strong>Formativas</strong> (acompañan el aprendizaje, retroalimentan, incluyen la voz del estudiante) y <strong>Sumativas disfrazadas</strong> (las llamo formativas pero solo miden o califican al final). Durante 8 minutos, enlistan sus prácticas habituales de manera honesta. Luego comparten y conversan.</p>",
+inputs:[{k:"p4_m4_fo",l:"Mis prácticas FORMATIVAS (genuinamente):",ph:"•\n•\n•",r:4},{k:"p4_m4_su",l:"Mis prácticas SUMATIVAS disfrazadas de formativas:",ph:"•\n•",r:4},{k:"p4_m4_pr",l:"La práctica que elegiré revisar como prioridad y por qué:",ph:"La práctica que voy a revisar es… porque…",r:3}]}],
+nota:"La clasificación del mapa no se comparte fuera del diálogo. El valor está en la honestidad personal.",tool:null},
+
+{n:5,nombre:"Cierre metacognitivo",min:15,pregunta:"Si una persona que no estuvo en esta sesión me preguntara qué entiendo ahora por evaluación formativa, ¿qué le diría con mis propias palabras?",
+actividades:[{t:"Bitácora final y compromiso",time:"15 min",inst:"<p>Cada persona escribe durante <strong>10 minutos</strong>. Al cierre, comparten <strong>solo el compromiso concreto</strong> y lo escriben al pie del pliego con la rúbrica construida.</p>",inputs:[]}],
+meta:{inst:"Elige al menos 4 de las siguientes preguntas y respóndelas.",
+preguntas:[
+{n:1,q:"¿Qué noción de evaluación formativa tenía antes y cuál se modificó al examinar instrumentos reales?",k:"p4_q1"},
+{n:2,q:"¿Qué experiencia personal con la evaluación sigue marcando hoy mi forma de evaluar?",k:"p4_q2"},
+{n:3,q:"¿Qué decisión de diseño de la rúbrica fue la más difícil? ¿Por qué?",k:"p4_q3"},
+{n:4,q:"¿Cuáles de mis prácticas que llamaba formativas reconocí honestamente como sumativas disfrazadas?",k:"p4_q4"},
+{n:5,q:"¿Qué papel le doy a la voz del estudiante en mis evaluaciones y cuál podría darle?",k:"p4_q5"},
+{n:6,q:"¿Qué transformación concreta haré en mi práctica evaluativa a partir de hoy?",k:"p4_q6"}],
+rubrica:[
+{c:"Distinción formativa / sumativa",o:"Distingue con argumentos pedagógicos cuándo una práctica es formativa y cuándo aparenta serlo, con ejemplos propios.",s:"Identifica diferencias generales pero algunas distinciones quedan en lo declarativo.",p:"Confunde rasgos formativos y sumativos o reproduce definiciones sin aplicarlas."},
+{c:"Lectura crítica de instrumentos",o:"Analiza los instrumentos reconociendo sus fortalezas, límites y contextos donde tienen sentido.",s:"Reconoce diferencias generales pero algunas valoraciones son superficiales.",p:"Se queda en clasificación descriptiva sin análisis crítico."},
+{c:"Diseño de rúbrica",o:"Aporta criterios claros, niveles diferenciados y descriptores observables; revisa críticamente lo construido.",s:"Aporta a la rúbrica pero algunos criterios o descriptores quedan ambiguos.",p:"No logra distinguir criterios pertinentes o los descriptores no son observables."},
+{c:"Honestidad en la autorrevisión",o:"Reconoce con franqueza prácticas propias sumativas disfrazadas y elige una para revisar.",s:"Reconoce algunas inconsistencias entre discurso y práctica, sin profundizar.",p:"Sostiene una visión idealizada de sus prácticas sin lograr autocrítica."},
+{c:"Diálogo horizontal",o:"Habla y escucha en proporciones equivalentes; aporta hipótesis y consulta sin depender.",s:"Participa activamente pero cae ocasionalmente en posición pasiva.",p:"Espera respuestas o domina la conversación sin escuchar."}],
+comp:{k:"p4_comp",l:"Mi compromiso concreto (una acción · un plazo · un criterio de seguimiento):"}},
+nota:"",tool:null}]}
+];
+</script>
+</body>
+</html>
